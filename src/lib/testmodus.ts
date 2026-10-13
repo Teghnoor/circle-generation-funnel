@@ -7,9 +7,11 @@
  * per Link umgehen. Vor dem Schalten von Werbung FUNNEL_TESTMODUS entfernen.
  */
 export function testmodus(): boolean {
+  // Großzügig lesen: im Vercel-Formular landet schnell ein Leerzeichen oder „true" statt „1".
+  const wert = (process.env.FUNNEL_TESTMODUS ?? "").trim().toLowerCase();
   return (
     process.env.NODE_ENV === "development" ||
     process.env.VERCEL_ENV === "preview" ||
-    process.env.FUNNEL_TESTMODUS === "1"
+    ["1", "true", "ja", "yes", "on"].includes(wert)
   );
 }
