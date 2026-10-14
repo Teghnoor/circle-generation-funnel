@@ -4,13 +4,19 @@ import { LEAD_COOKIE, cookieLesen, leadMelden } from "@/lib/funnel-leads";
 
 export const dynamic = "force-dynamic";
 
-const MEILENSTEINE = new Set(["start", "25", "50", "75", "80", "100", "frei", "rettung"]);
+const MEILENSTEINE = new Set(["start", "25", "50", "75", "80", "100", "frei", "rettung", "termin"]);
+
+/** Calendly-Adressen, die mit der Buchung mitkommen — alles andere wird verworfen. */
+function calendlyUri(v: unknown): string | null {
+  const s = String(v ?? "");
+  return /^https:\/\/api\.calendly\.com\/[\w/-]{1,200}$/.test(s) ? s : null;
+}
 
 /**
- * Video-Meilensteine. Im Log landen alle; an den Webhook geht nur die
- * Freischaltung — damit kann das E-Mail-Tool z. B. allen, die nicht bis 80 %
- * gekommen sind, eine Erinnerung schicken, ohne pro Viertel eine Aufgabe zu
- * verbrauchen.
+ * Video-Meilensteine und Terminbuchung. Im Log landen alle; an den Webhook
+ * gehen nur Freischaltung und Termin. Damit kann das E-Mail-Tool z. B. allen,
+ * die nicht bis 80 % gekommen sind, eine Erinnerung schicken, ohne pro Viertel
+ * eine Aufgabe zu verbrauchen.
  */
 export async function POST(req: Request) {
   let body: Record<string, unknown>;
@@ -33,6 +39,20 @@ export async function POST(req: Request) {
       email: lead.email,
       zeit: new Date().toISOString(),
       grund: m === "frei" ? "schwelle_erreicht" : "video_laedt_nicht",
+      ...lead.herkunft,
+    });
+  }
+
+  if (m === "termin") {
+    await leadMelden({
+      typ: "termin_gebucht",
+      id: lead?.id ?? "",
+      vorname: lead?.vorname ?? "",
+      email: lead?.email ?? "",
+      zeit: new Date().toISOString(),
+      termin: calendlyUri(body.termin),
+      teilnehmer: calendlyUri(body.teilnehmer),
+      ...lead?.herkunft,
     });
   }
   return new NextResponse(null, { status: 204 });

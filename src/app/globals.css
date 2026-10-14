@@ -8,22 +8,6 @@ body {
   background: #000;
 }
 
-/* Das Circle-Zeichen: der äußere Ring pulsiert langsam. */
-.anim-ring {
-  animation: ring-puls 2.8s ease-in-out infinite;
-}
-@keyframes ring-puls {
-  0%,
-  100% {
-    opacity: 0.55;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.15;
-    transform: scale(1.35);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

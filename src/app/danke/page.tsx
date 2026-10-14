@@ -1,13 +1,25 @@
 import { Fuss, Marke, Schritte } from "@/components/funnel/teile";
 import { LINKS } from "@/lib/funnel";
 
-const NAECHSTE = [
-  { titel: "Postfach checken", text: "Du bekommst gleich eine Bestätigung per E-Mail. Schau auch im Spam-Ordner nach." },
-  { titel: "Wir melden uns", text: "Innerhalb von 24 Stunden meldet sich jemand aus dem Team per WhatsApp bei dir." },
-  { titel: "Start in der Community", text: "Nach dem kurzen Gespräch bekommst du Zugang zum Videokurs und zu den Live-Calls." },
+/** Ohne Calendly fragt der Lead nur einen Rückruf an — dann passen andere Schritte. */
+const NACH_ANFRAGE = [
+  { titel: "Handy bereithalten", text: "Innerhalb von 24 Stunden meldet sich jemand aus unserem Team per WhatsApp bei dir." },
+  { titel: "Termin festlegen", text: "Gemeinsam sucht ihr einen Termin für dein kostenloses Erstgespräch." },
+  { titel: "Erstgespräch", text: "Wir schauen gemeinsam, ob Circle Generation zu dir passt." },
 ];
 
-export default function DankeSeite() {
+const NAECHSTE = [
+  { titel: "Postfach checken", text: "Die Terminbestätigung kommt per E-Mail. Schau auch im Spam-Ordner nach." },
+  { titel: "WhatsApp vom Team", text: "Vor dem Gespräch meldet sich jemand aus unserem Team per WhatsApp bei dir." },
+  { titel: "Erstgespräch", text: "Sei pünktlich und an einem ruhigen Ort. Wir schauen gemeinsam, ob Circle Generation zu dir passt." },
+];
+
+export default async function DankeSeite({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const anfrage = (await searchParams).art === "anfrage";
   return (
     <main>
       <section className="relative px-4 pb-6 pt-10 md:pt-14">
@@ -20,16 +32,18 @@ export default function DankeSeite() {
             </svg>
           </div>
           <h1 className="cg-h1 mt-7">
-            Du bist dabei <span aria-hidden>⭕️</span>
+            {anfrage ? "Anfrage ist da" : "Dein Erstgespräch steht"} <span aria-hidden>⭕️</span>
           </h1>
           <p className="cg-text mt-4 max-w-xl text-[17px]">
-            Deine Anmeldung ist eingegangen. Ab jetzt geht es nur noch nach vorne — hier sind deine nächsten Schritte.
+            {anfrage
+              ? "Super, wir haben deine Anfrage bekommen. Hier sind deine nächsten Schritte."
+              : "Super, dein Termin ist eingetragen. Hier sind deine nächsten Schritte."}
           </p>
         </div>
       </section>
 
       <section className="mx-auto w-full max-w-5xl px-4 py-12">
-        <Schritte schritte={NAECHSTE} />
+        <Schritte schritte={anfrage ? NACH_ANFRAGE : NAECHSTE} />
         <div className="mt-10 text-center">
           <a href={LINKS.instagram} target="_blank" rel="noreferrer" className="cg-btn">
             Folge uns auf Instagram

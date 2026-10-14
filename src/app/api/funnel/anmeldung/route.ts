@@ -40,6 +40,7 @@ export async function POST(req: Request) {
     ziel: text(body.ziel, 600) || null,
     sehquote: Number.isFinite(sehquote) ? Math.round(Math.min(Math.max(sehquote, 0), 1) * 100) : null,
     optinEmail: lead && lead.email !== email ? lead.email : undefined,
+    ...lead?.herkunft,
   });
 
   return NextResponse.json({ ok: true });

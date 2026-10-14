@@ -2,9 +2,11 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { SPEICHER } from "@/lib/funnel";
+import { CALENDLY_URL, SPEICHER } from "@/lib/funnel";
+import { pixel } from "@/lib/pixel";
 import GatedVideo, { ereignis, type FreiGrund } from "./gated-video";
 import { Haken, Schloss } from "./teile";
+import Termin from "./termin";
 
 function lesen(k: string): string {
   try {
@@ -36,12 +38,28 @@ export default function VideoFunnel({
 }) {
   const [frei, setFrei] = useState(startFrei);
   const [anteil, setAnteil] = useState(0);
+  // Beginn des 48-Stunden-Fensters. Erst im Browser bekannt, deshalb rendert der Termin-Block erst danach.
+  const [freiSeit, setFreiSeit] = useState<number | null>(null);
+  const [kontakt, setKontakt] = useState({ vorname: vornameServer, email: emailServer });
 
   // Wer schon freigeschaltet war, muss nicht nochmal 80 % schauen.
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (lesen(SPEICHER.frei) === "1") setFrei(true);
+    setKontakt((m) => ({ vorname: m.vorname || lesen(SPEICHER.vorname), email: m.email || lesen(SPEICHER.email) }));
   }, []);
+
+  useEffect(() => {
+    if (!frei) return;
+    let seit = Number(lesen(SPEICHER.freiSeit));
+    if (!seit || startFrei) {
+      seit = Date.now();
+      try {
+        localStorage.setItem(SPEICHER.freiSeit, String(seit));
+      } catch {}
+    }
+    setFreiSeit(seit);
+  }, [frei, startFrei]);
   /* eslint-enable react-hooks/set-state-in-effect */
 
   const freischalten = useCallback((grund: FreiGrund) => {
@@ -50,6 +68,7 @@ export default function VideoFunnel({
       localStorage.setItem(SPEICHER.frei, "1");
     } catch {}
     ereignis(grund);
+    pixel("freigeschaltet");
   }, []);
 
   const prozent = Math.round(anteil * 100);
@@ -65,7 +84,7 @@ export default function VideoFunnel({
             Dein Fortschritt: <span className="tabular-nums">{prozent} %</span>
           </span>
           <span className={frei ? "font-medium text-[#ff2e32]" : "text-white/55"}>
-            {frei ? "✓ Anmeldung freigeschaltet" : `Noch ${Math.max(ziel - prozent, 0)} % bis zur Freischaltung`}
+            {frei ? "✓ Erstgespräch freigeschaltet" : `Noch ${Math.max(ziel - prozent, 0)} % bis zur Freischaltung`}
           </span>
         </div>
         <div className="cg-fortschritt">
@@ -75,12 +94,22 @@ export default function VideoFunnel({
       </div>
 
       <div className="mx-auto mt-8 w-full max-w-3xl md:mt-10">
-        {frei ? (
-          <Anmeldung vornameServer={vornameServer} emailServer={emailServer} anteil={anteil} />
-        ) : (
+        {!frei ? (
           <Gesperrt ziel={ziel} prozent={prozent} />
+        ) : CALENDLY_URL ? (
+          freiSeit !== null && <Termin vorname={kontakt.vorname} email={kontakt.email} freiSeit={freiSeit} />
+        ) : (
+          <Anmeldung vornameServer={vornameServer} emailServer={emailServer} anteil={anteil} />
         )}
       </div>
+
+      {frei && (
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-black/85 px-4 pb-[calc(12px+env(safe-area-inset-bottom))] pt-3 backdrop-blur-md md:hidden">
+          <a href={CALENDLY_URL ? "#termin" : "#anmeldung"} className="cg-btn w-full py-3.5 text-[16px]">
+            Jetzt Erstgespräch buchen ⭕️
+          </a>
+        </div>
+      )}
     </>
   );
 }
@@ -102,10 +131,11 @@ function Gesperrt({ ziel, prozent }: { ziel: number; prozent: number }) {
         <span className="grid h-14 w-14 place-items-center rounded-full border border-white/15 bg-black/60">
           <Schloss className="h-6 w-6 text-[#ff2e32]" />
         </span>
-        <p className="text-[19px] font-semibold tracking-[-0.02em] md:text-[22px]">Anmeldung noch gesperrt</p>
+        <p className="text-[19px] font-semibold tracking-[-0.02em] md:text-[22px]">
+          Der Button erscheint, sobald du das Training geschaut hast.
+        </p>
         <p className="cg-text max-w-md text-[15px]">
-          Schau dir mindestens {ziel} % des Trainings an — dann schaltet sich hier die Anmeldung zum Videokurs und zur
-          Community frei.
+          Ab {ziel} % kannst du hier dein kostenloses Erstgespräch buchen.
           {prozent > 0 && <span className="text-white/80"> Du hast schon {prozent} % geschafft.</span>}
         </p>
       </div>
@@ -152,7 +182,7 @@ function Anmeldung({
       });
       const d = await r.json().catch(() => ({}));
       if (!r.ok) throw new Error(d.fehler || "Das hat nicht geklappt. Versuch es bitte nochmal.");
-      router.push("/danke");
+      router.push("/danke?art=anfrage");
     } catch (err) {
       setFehler(err instanceof Error ? err.message : "Das hat nicht geklappt.");
       setLaeuft(false);
@@ -167,12 +197,12 @@ function Anmeldung({
           <span className="cg-tag-punkt" /> Freigeschaltet
         </span>
         <h2 className="mt-4 text-[26px] font-semibold leading-tight tracking-[-0.035em] md:text-[34px]">
-          Sichere dir jetzt deinen Platz in Circle Generation <span aria-hidden>⭕️</span>
+          Sichere dir dein kostenloses Erstgespräch <span aria-hidden>⭕️</span>
         </h2>
         <ul className="mt-4 flex flex-col gap-2 text-[15px] text-white/80">
-          <li className="flex gap-2.5"><Haken /> Zugang zum kompletten Videokurs</li>
-          <li className="flex gap-2.5"><Haken /> Wöchentliche Live-Calls & persönlicher Ansprechpartner</li>
-          <li className="flex gap-2.5"><Haken /> Maximal 100 Plätze — wir melden uns persönlich bei dir</li>
+          <li className="flex gap-2.5"><Haken /> Persönliches Gespräch mit unserem Team</li>
+          <li className="flex gap-2.5"><Haken /> Wir zeigen dir, wie du mit fertigen Videos startest</li>
+          <li className="flex gap-2.5"><Haken /> Kostenlos und unverbindlich, wir melden uns per WhatsApp</li>
         </ul>
 
         <form onSubmit={absenden} className="mt-7 grid gap-3 sm:grid-cols-2" noValidate>
@@ -192,10 +222,10 @@ function Anmeldung({
           {fehler && <p className="rounded-xl bg-[#ff2e32]/10 px-3 py-2 text-[14px] text-[#ff7a7c] sm:col-span-2">{fehler}</p>}
 
           <button type="submit" className="cg-btn mt-2 w-full sm:col-span-2" disabled={laeuft}>
-            {laeuft ? "Wird gesendet …" : "JETZT ANMELDEN ⭕️"}
+            {laeuft ? "Wird gesendet …" : "ERSTGESPRÄCH ANFRAGEN ⭕️"}
           </button>
           <p className="text-center text-[12px] text-white/40 sm:col-span-2">
-            Mit dem Absenden meldest du dich unverbindlich an. Wir melden uns innerhalb von 24 Stunden.
+            Kostenlos und unverbindlich. Wir melden uns innerhalb von 24 Stunden per WhatsApp.
           </p>
         </form>
       </div>

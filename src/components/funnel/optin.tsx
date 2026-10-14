@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { LINKS, SPEICHER } from "@/lib/funnel";
+import { HERKUNFT_PARAMETER, LINKS, SPEICHER } from "@/lib/funnel";
+import { pixel } from "@/lib/pixel";
 import { PlayIcon } from "./teile";
 
 function speichern(k: string, v: string) {
@@ -11,12 +12,31 @@ function speichern(k: string, v: string) {
   } catch {}
 }
 
-/** UTM-Parameter der Anzeige mitschicken, damit das E-Mail-Tool die Quelle kennt. */
-function utmLesen(): Record<string, string> {
-  const p = new URLSearchParams(window.location.search);
-  const utm: Record<string, string> = {};
-  for (const [k, v] of p) if (k.startsWith("utm_") || k === "fbclid" || k === "gclid" || k === "ttclid") utm[k] = v;
-  return utm;
+/**
+ * Herkunft (?src=fanpage3, utm_…) aus dem Link. Steht im Link nichts, gilt die
+ * zuletzt gemerkte — so geht die Quelle nicht verloren, wenn jemand die Seite
+ * später ohne Parameter wieder öffnet.
+ */
+function herkunftLesen(): Record<string, string> {
+  const aktuell: Record<string, string> = {};
+  for (const [k, v] of new URLSearchParams(window.location.search)) if (HERKUNFT_PARAMETER.test(k)) aktuell[k] = v.slice(0, 200);
+  try {
+    if (Object.keys(aktuell).length) {
+      localStorage.setItem(SPEICHER.herkunft, JSON.stringify(aktuell));
+      return aktuell;
+    }
+    return JSON.parse(localStorage.getItem(SPEICHER.herkunft) || "{}");
+  } catch {
+    return aktuell;
+  }
+}
+
+/** Merkt sich die Herkunft schon beim Laden der Seite, nicht erst beim Absenden. */
+export function HerkunftMerken() {
+  useEffect(() => {
+    herkunftLesen();
+  }, []);
+  return null;
 }
 
 /**
@@ -28,7 +48,7 @@ export function OptinAusloeser({
   children,
   poster,
 }: {
-  art?: "knopf" | "video";
+  art?: "knopf" | "video" | "leiste";
   children?: React.ReactNode;
   poster?: string;
 }) {
@@ -46,17 +66,24 @@ export function OptinAusloeser({
         >
           {poster && (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={poster} alt="" className="absolute inset-0 h-full w-full object-cover opacity-60" />
+            <img src={poster} alt="" className="absolute inset-0 h-full w-full object-cover" />
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/40 backdrop-blur-[2px]" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/10" />
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 text-center">
             <span className="cg-play transition-transform group-hover:scale-105">
               <PlayIcon className="ml-1 h-9 w-9 text-white" />
             </span>
             <span className="text-lg font-semibold md:text-xl">Video starten</span>
-            <span className="text-sm text-white/60">Klicke hier, um das kostenlose Training zu starten</span>
+            <span className="text-sm text-white/70">Klicke hier, um das kostenlose Training zu starten</span>
           </div>
         </button>
+      ) : art === "leiste" ? (
+        // Am Handy unten fest — fast alle kommen von TikTok, also vom Handy.
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-black/85 px-4 pb-[calc(12px+env(safe-area-inset-bottom))] pt-3 backdrop-blur-md md:hidden">
+          <button type="button" onClick={() => setOffen(true)} className="cg-btn w-full py-3.5 text-[16px]">
+            {children}
+          </button>
+        </div>
       ) : (
         <button type="button" onClick={() => setOffen(true)} className="cg-btn">
           {children}
@@ -107,7 +134,7 @@ function OptinFenster({ schliessen }: { schliessen: () => void }) {
           email,
           einwilligung: ok,
           firma,
-          utm: utmLesen(),
+          utm: herkunftLesen(),
           quelle: document.referrer || null,
         }),
       });
@@ -115,6 +142,7 @@ function OptinFenster({ schliessen }: { schliessen: () => void }) {
       if (!r.ok) throw new Error(d.fehler || "Das hat nicht geklappt. Versuch es bitte nochmal.");
       speichern(SPEICHER.vorname, vorname.trim());
       speichern(SPEICHER.email, email.trim());
+      pixel("lead");
       router.push("/video");
     } catch (err) {
       setFehler(err instanceof Error ? err.message : "Das hat nicht geklappt.");
@@ -144,12 +172,6 @@ function OptinFenster({ schliessen }: { schliessen: () => void }) {
         </button>
 
         <div className="mb-5">
-          <div className="mb-2 flex items-center gap-2 text-[13px] font-medium text-[var(--cg-rot)]">
-            <span className="h-1.5 w-full max-w-[140px] overflow-hidden rounded-full bg-white/10">
-              <span className="block h-full w-1/2 rounded-full bg-[var(--cg-rot)]" />
-            </span>
-            Schritt 1 von 2
-          </div>
           <h2 id="optin-titel" className="text-[24px] font-semibold tracking-[-0.03em]">
             Fast geschafft! Letzter Schritt …
           </h2>

@@ -8,7 +8,7 @@ import { LEAD_COOKIE } from "./funnel";
  * geht, falls der Webhook mal nicht antwortet.
  */
 
-export type LeadTyp = "optin" | "video_freigeschaltet" | "anmeldung";
+export type LeadTyp = "optin" | "video_freigeschaltet" | "termin_gebucht" | "anmeldung";
 
 export type LeadDaten = {
   typ: LeadTyp;
@@ -20,7 +20,7 @@ export type LeadDaten = {
 };
 
 /** Was im Cookie steht — nur so viel, wie /video und die Events brauchen. */
-export type LeadCookie = { id: string; vorname: string; email: string };
+export type LeadCookie = { id: string; vorname: string; email: string; herkunft?: Record<string, string> };
 
 export const COOKIE_OPTIONEN = {
   httpOnly: true,
@@ -39,7 +39,8 @@ export function cookieLesen(wert: string | undefined): LeadCookie | null {
   try {
     const l = JSON.parse(Buffer.from(wert, "base64url").toString("utf8"));
     if (typeof l?.id === "string" && typeof l?.email === "string") {
-      return { id: l.id, email: l.email, vorname: String(l.vorname ?? "") };
+      const herkunft = l.herkunft && typeof l.herkunft === "object" ? (l.herkunft as Record<string, string>) : undefined;
+      return { id: l.id, email: l.email, vorname: String(l.vorname ?? ""), herkunft };
     }
   } catch {}
   return null;

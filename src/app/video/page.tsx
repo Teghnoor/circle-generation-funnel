@@ -2,8 +2,8 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import VideoFunnel from "@/components/funnel/video-funnel";
-import { Abschnitt, Faq, Fuss, Leiste, Marke, NurFuerDich, Saeulen, Stimmen } from "@/components/funnel/teile";
-import { FREISCHALTEN_AB, LEAD_COOKIE, VIDEO_POSTER, VIDEO_URL } from "@/lib/funnel";
+import { Abschnitt, Faq, Fuss, Leiste, Marke, NurFuerDich, SoFunktioniert, VideoStimmen } from "@/components/funnel/teile";
+import { FREISCHALTEN_AB, GESPRAECHE, LEAD_COOKIE, VIDEO_POSTER, VIDEO_URL } from "@/lib/funnel";
 import { cookieLesen } from "@/lib/funnel-leads";
 import { testmodus } from "@/lib/testmodus";
 
@@ -30,13 +30,13 @@ export default async function VideoSeite({
   const startFrei = test && params.frei === "1";
 
   return (
-    <main>
+    <main className="pb-24 md:pb-0">
       {test && (
         <Link href="/vorschau" className="block bg-white px-4 py-1.5 text-center text-[12px] font-medium text-black">
-          Testmodus · {startFrei ? "Anmeldung freigeschaltet" : `Schwelle ${ziel} %`} · alle Seiten →
+          Testmodus · {startFrei ? "Erstgespräch freigeschaltet" : `Schwelle ${ziel} %`} · alle Seiten →
         </Link>
       )}
-      <Leiste>Schau das Training bis zum Ende — ab {ziel} % schaltest du die Anmeldung frei.</Leiste>
+      <Leiste>Schau das Training bis zum Ende · danach kannst du eins von {GESPRAECHE} Erstgesprächen buchen</Leiste>
 
       <section className="relative px-4 pb-6 pt-7 md:pt-10">
         <div className="cg-schein" />
@@ -46,8 +46,8 @@ export default async function VideoSeite({
             {lead.vorname ? `${lead.vorname}, dein` : "Dein"} Training ist <span className="cg-rot">bereit</span>.
           </h1>
           <p className="cg-text mt-4 max-w-2xl text-[16px] md:text-[18px]">
-            Nimm dir die Zeit, schalte den Ton an und schau bis zum Schluss. Danach weißt du genau, ob Circle Generation{" "}
-            <span aria-hidden>⭕️</span> das Richtige für dich ist.
+            Nimm dir die Zeit, schalte den Ton an und schau bis zum Schluss. Danach weißt du genau, wie Circle Generation{" "}
+            <span aria-hidden>⭕️</span> funktioniert und ob es zu dir passt.
           </p>
 
           <div className="mt-8 w-full max-w-4xl md:mt-10">
@@ -58,15 +58,18 @@ export default async function VideoSeite({
         </div>
       </section>
 
-      <Abschnitt tag="Community" titel={<>Wie Circle Generation <span aria-hidden>⭕️</span> funktioniert</>}>
-        <Saeulen />
+      <Abschnitt tag="Was ist Circle Generation" titel={<>Vom Video bis zur <span className="cg-rot">Provision</span></>}>
+        <SoFunktioniert />
       </Abschnitt>
 
-      <Abschnitt tag="Für wen" titel={<>Circle Generation <span aria-hidden>⭕️</span> ist nur für dich, wenn …</>}>
+      <Abschnitt tag="Echte Ergebnisse" titel="Das sagen die, die es schon machen">
+        <VideoStimmen />
+      </Abschnitt>
+
+      <Abschnitt tag="Für wen" titel={<>Circle Generation <span aria-hidden>⭕️</span> ist für dich, wenn …</>}>
         <NurFuerDich />
       </Abschnitt>
 
-      <Stimmen />
       <Faq />
       <Fuss />
     </main>

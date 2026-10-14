@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { HERKUNFT_PARAMETER } from "@/lib/funnel";
 import {
   COOKIE_OPTIONEN,
   LEAD_COOKIE,
@@ -34,7 +35,7 @@ export async function POST(req: Request) {
   const utm: Record<string, string> = {};
   if (body.utm && typeof body.utm === "object") {
     for (const [k, v] of Object.entries(body.utm as Record<string, unknown>)) {
-      if (/^utm_[a-z]{2,10}$|^fbclid$|^gclid$|^ttclid$/.test(k)) utm[k] = text(v, 200);
+      if (HERKUNFT_PARAMETER.test(k)) utm[k] = text(v, 200);
     }
   }
 
@@ -51,6 +52,9 @@ export async function POST(req: Request) {
   });
 
   const res = NextResponse.json({ ok: true });
-  res.cookies.set(LEAD_COOKIE, cookieSchreiben({ id, vorname, email }), COOKIE_OPTIONEN);
+  // Herkunft mitnehmen, damit auch Freischaltung und Termin der Fanpage zugeordnet werden.
+  const herkunft: Record<string, string> = {};
+  for (const k of ["src", "utm_source", "utm_campaign", "utm_medium"]) if (utm[k]) herkunft[k] = utm[k].slice(0, 80);
+  res.cookies.set(LEAD_COOKIE, cookieSchreiben({ id, vorname, email, herkunft }), COOKIE_OPTIONEN);
   return res;
 }

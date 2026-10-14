@@ -22,12 +22,12 @@ const MEILENSTEINE = [0.25, 0.5, 0.75, 1] as const;
 
 export type FreiGrund = "frei" | "rettung";
 
-export function ereignis(m: string, sek = 0) {
+export function ereignis(m: string, sek = 0, daten?: Record<string, unknown>) {
   try {
     fetch("/api/funnel/event", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ m, sek: Math.round(sek) }),
+      body: JSON.stringify({ m, sek: Math.round(sek), ...daten }),
       keepalive: true,
     }).catch(() => {});
   } catch {}
