@@ -125,19 +125,10 @@ export const VIDEO_STIMMEN: VideoStimme[] = [
  * Der Weg „vorher → heute" in Fotos. `wer` ist der Name der Person auf dem
  * Foto — leer lassen, bis klar ist, wer wer ist.
  */
-export const REISE: { bild: string; datum: string; text: string; wer: string }[] = [
-  { bild: "/funnel/reise/2024-05-anfang.jpg", datum: "Mai 2024", text: "Der Anfang", wer: "" },
-  { bild: "/funnel/reise/2024-05-buero.jpg", datum: "Mai 2024", text: "Die ersten Schritte", wer: "" },
-  { bild: "/funnel/reise/2024-11-nacht.jpg", datum: "Nov 2024", text: "Nächte durchgearbeitet", wer: "" },
-  { bild: "/funnel/reise/2026-09-laptop.jpg", datum: "Sep 2026", text: "Heute", wer: "" },
-  { bild: "/funnel/reise/2026-09-podcast.jpg", datum: "Sep 2026", text: "Heute", wer: "" },
-];
+export const REISE: { bild: string; datum: string; text: string; wer: string }[] = [];  // Koray-Fotos auf Wunsch Tegh 01.11. entfernt
 
 /** Echte Auszahlungen. Nur echte Screenshots verwenden. */
-export const BEWEISE: { bild: string; text: string }[] = [
-  { bild: "/funnel/beweise/auszahlung-april.jpg", text: "Copecart-Auszahlung, April 2025" },
-  { bild: "/funnel/beweise/auszahlung-maerz.jpg", text: "Copecart-Auszahlung, März 2025" },
-];
+export const BEWEISE: { bild: string; text: string }[] = [];  // auf Wunsch Tegh 01.11. entfernt
 
 /**
  * Nachrichten aus der Community (WhatsApp-Screenshots, 01.11.2026 von Tegh).

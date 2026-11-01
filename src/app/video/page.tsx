@@ -2,7 +2,7 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import VideoFunnel from "@/components/funnel/video-funnel";
-import { Abschnitt, Faq, Fuss, Leiste, Marke, Nachrichten, NurFuerDich, SoFunktioniert, VideoStimmen } from "@/components/funnel/teile";
+import { Abschnitt, Fuss, Leiste, Marke, Nachrichten, VideoStimmen } from "@/components/funnel/teile";
 import { FREISCHALTEN_AB, GESPRAECHE, LEAD_COOKIE, VIDEO_POSTER, VIDEO_URL } from "@/lib/funnel";
 import { cookieLesen } from "@/lib/funnel-leads";
 import { testmodus } from "@/lib/testmodus";
@@ -54,13 +54,9 @@ export default async function VideoSeite({
             <VideoFunnel src={VIDEO_URL} poster={VIDEO_POSTER} schwelle={schwelle} vorname={lead.vorname} email={lead.email} startFrei={startFrei} />
           </div>
 
-          <p className="mt-12 text-[15px] font-medium text-white/40 md:text-lg">↓ Das erwartet dich in Circle Generation ↓</p>
+          <p className="mt-12 text-[15px] font-medium text-white/40 md:text-lg">↓ Das sagen die, die es bereits machen ↓</p>
         </div>
       </section>
-
-      <Abschnitt tag="Was ist Circle Generation" titel={<>Vom Video bis zur <span className="cg-rot">Provision</span></>}>
-        <SoFunktioniert />
-      </Abschnitt>
 
       <Abschnitt tag="Echte Ergebnisse" titel="Das sagen die, die es schon machen">
         <VideoStimmen />
@@ -69,15 +65,10 @@ export default async function VideoSeite({
       <Abschnitt tag="Aus der Community" titel="Nachrichten, die uns jede Woche erreichen">
         <Nachrichten />
         <p className="mt-6 text-center text-[12px] text-white/40">
-          Echte Nachrichten aus der Community. Ergebnisse sind nicht garantiert und hängen von deinem Einsatz ab.
+          Echte Nachrichten aus der Community. Ergebnisse sind nicht garantiert und variieren individuell.
         </p>
       </Abschnitt>
 
-      <Abschnitt tag="Für wen" titel={<>Circle Generation <span aria-hidden>⭕️</span> ist für dich, wenn …</>}>
-        <NurFuerDich />
-      </Abschnitt>
-
-      <Faq />
       <Fuss />
     </main>
   );
