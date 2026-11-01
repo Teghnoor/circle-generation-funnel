@@ -5,7 +5,6 @@ import {
   Fuss,
   Leiste,
   Marke,
-  Tag,
   VideoStimmen,
 } from "@/components/funnel/teile";
 import { GESPRAECHE, VIDEO_LAENGE, VIDEO_POSTER } from "@/lib/funnel";
@@ -20,10 +19,7 @@ export default function StartSeite() {
         <div className="cg-schein" />
         <div className="relative mx-auto flex max-w-5xl flex-col items-center text-center">
           <Marke />
-          <div className="mt-7 md:mt-9">
-            <Tag>Kostenloses Training{VIDEO_LAENGE ? ` · ca. ${VIDEO_LAENGE}` : ""}</Tag>
-          </div>
-          <h1 className="cg-h1 mt-5 max-w-4xl">
+          <h1 className="cg-h1 mt-7 max-w-4xl md:mt-9">
             Schau dir das <span className="cg-rot">kostenlose Videotraining</span>
             {VIDEO_LAENGE ? ` (${VIDEO_LAENGE})` : ""} jetzt an.
           </h1>
