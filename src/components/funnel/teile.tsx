@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { BEWEISE, FAQ, LINKS, NUR_FUER_DICH_WENN, REISE, SO_FUNKTIONIERT, VIDEO_STIMMEN, ZAHLEN } from "@/lib/funnel";
+import { BEWEISE, FAQ, NACHRICHTEN, LINKS, NUR_FUER_DICH_WENN, REISE, SO_FUNKTIONIERT, VIDEO_STIMMEN, ZAHLEN } from "@/lib/funnel";
 
 /** Bausteine, die Start, /video und /danke teilen. */
 
@@ -225,6 +225,27 @@ export function Beweise() {
             <Image src={b.bild} alt={b.text} fill sizes="(min-width: 768px) 280px, 50vw" className="object-cover object-top" />
           </div>
           <figcaption className="mt-2 text-center text-[13px] text-white/55">{b.text}</figcaption>
+        </figure>
+      ))}
+    </div>
+  );
+}
+
+/** WhatsApp-Nachrichten aus der Community, als Masonry-Spalten. */
+export function Nachrichten() {
+  if (NACHRICHTEN.length === 0) return null;
+  return (
+    <div className="columns-2 gap-3 md:columns-3 [&>figure]:mb-3">
+      {NACHRICHTEN.map((n) => (
+        <figure key={n.bild} className="cg-karte break-inside-avoid overflow-hidden">
+          <Image
+            src={n.bild}
+            alt={`Nachricht von ${n.wer}`}
+            width={n.breite}
+            height={n.hoehe}
+            sizes="(min-width: 768px) 300px, 50vw"
+            className="block h-auto w-full"
+          />
         </figure>
       ))}
     </div>

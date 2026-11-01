@@ -1,5 +1,6 @@
 import { HerkunftMerken, OptinAusloeser } from "@/components/funnel/optin";
 import {
+  Nachrichten,
   Abschnitt,
   Beweise,
   Faq,
@@ -72,6 +73,13 @@ export default function StartSeite() {
 
       <Abschnitt id="stimmen" tag="Echte Ergebnisse" titel="Das sagen die, die es schon machen">
         <VideoStimmen />
+      </Abschnitt>
+
+      <Abschnitt tag="Aus der Community" titel="Nachrichten, die uns jede Woche erreichen">
+        <Nachrichten />
+        <p className="mt-6 text-center text-[12px] text-white/40">
+          Echte Nachrichten aus der Community. Ergebnisse sind nicht garantiert und hängen von deinem Einsatz ab.
+        </p>
       </Abschnitt>
 
       <Abschnitt tag="Vorher → heute" titel="Jeder hat mal klein angefangen">

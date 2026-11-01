@@ -2,7 +2,7 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import VideoFunnel from "@/components/funnel/video-funnel";
-import { Abschnitt, Faq, Fuss, Leiste, Marke, NurFuerDich, SoFunktioniert, VideoStimmen } from "@/components/funnel/teile";
+import { Abschnitt, Faq, Fuss, Leiste, Marke, Nachrichten, NurFuerDich, SoFunktioniert, VideoStimmen } from "@/components/funnel/teile";
 import { FREISCHALTEN_AB, GESPRAECHE, LEAD_COOKIE, VIDEO_POSTER, VIDEO_URL } from "@/lib/funnel";
 import { cookieLesen } from "@/lib/funnel-leads";
 import { testmodus } from "@/lib/testmodus";
@@ -64,6 +64,13 @@ export default async function VideoSeite({
 
       <Abschnitt tag="Echte Ergebnisse" titel="Das sagen die, die es schon machen">
         <VideoStimmen />
+      </Abschnitt>
+
+      <Abschnitt tag="Aus der Community" titel="Nachrichten, die uns jede Woche erreichen">
+        <Nachrichten />
+        <p className="mt-6 text-center text-[12px] text-white/40">
+          Echte Nachrichten aus der Community. Ergebnisse sind nicht garantiert und hängen von deinem Einsatz ab.
+        </p>
       </Abschnitt>
 
       <Abschnitt tag="Für wen" titel={<>Circle Generation <span aria-hidden>⭕️</span> ist für dich, wenn …</>}>

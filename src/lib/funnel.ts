@@ -140,6 +140,21 @@ export const BEWEISE: { bild: string; text: string }[] = [
 ];
 
 /**
+ * Nachrichten aus der Community (WhatsApp-Screenshots, 01.11.2026 von Tegh).
+ * Telefonnummern und fremde Namen sind unkenntlich gemacht.
+ */
+export const NACHRICHTEN: { bild: string; breite: number; hoehe: number; wer: string }[] = [
+  { bild: "/funnel/nachrichten/sarah.jpg", breite: 617, hoehe: 1280, wer: "Sarah" },
+  { bild: "/funnel/nachrichten/mo.jpg", breite: 616, hoehe: 1280, wer: "Mo" },
+  { bild: "/funnel/nachrichten/max.jpg", breite: 620, hoehe: 1280, wer: "Max" },
+  { bild: "/funnel/nachrichten/lisa.jpg", breite: 619, hoehe: 1280, wer: "Lisa" },
+  { bild: "/funnel/nachrichten/marilyn-provision.jpg", breite: 753, hoehe: 1280, wer: "Marilyn" },
+  { bild: "/funnel/nachrichten/ellina.jpg", breite: 1054, hoehe: 770, wer: "Ellina" },
+  { bild: "/funnel/nachrichten/marilyn-call.jpg", breite: 1280, hoehe: 998, wer: "Marilyn" },
+  { bild: "/funnel/nachrichten/killian.jpg", breite: 617, hoehe: 1280, wer: "Killian" },
+];
+
+/**
  * Zahlenleiste (z. B. { wert: "120+", text: "Mitglieder" }). Nur echte Zahlen
  * eintragen — solange die Liste leer ist, wird die Leiste nicht angezeigt.
  */
