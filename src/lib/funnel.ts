@@ -134,15 +134,15 @@ export const BEWEISE: { bild: string; text: string }[] = [];  // auf Wunsch Tegh
  * Nachrichten aus der Community (WhatsApp-Screenshots, 01.11.2026 von Tegh).
  * Telefonnummern und fremde Namen sind unkenntlich gemacht.
  */
-export const NACHRICHTEN: { bild: string; breite: number; hoehe: number; wer: string }[] = [
-  { bild: "/funnel/nachrichten/sarah.jpg", breite: 617, hoehe: 1280, wer: "Sarah" },
-  { bild: "/funnel/nachrichten/mo.jpg", breite: 616, hoehe: 1280, wer: "Mo" },
-  { bild: "/funnel/nachrichten/max.jpg", breite: 620, hoehe: 1280, wer: "Max" },
-  { bild: "/funnel/nachrichten/lisa.jpg", breite: 619, hoehe: 1280, wer: "Lisa" },
-  { bild: "/funnel/nachrichten/marilyn-provision.jpg", breite: 753, hoehe: 1280, wer: "Marilyn" },
+export const NACHRICHTEN: { bild: string; breite: number; hoehe: number; wer: string; zitat?: string }[] = [
+  { bild: "/funnel/nachrichten/sarah.jpg", breite: 617, hoehe: 1280, wer: "Sarah", zitat: "Hätte am Anfang nicht gedacht, dass ich so schnell mein erstes Ergebnis sehen würde." },
+  { bild: "/funnel/nachrichten/mo.jpg", breite: 616, hoehe: 1280, wer: "Mo", zitat: "Vor ein paar Wochen hätte ich niemals gedacht, dass ich mir nebenbei online etwas Eigenes aufbauen kann." },
+  { bild: "/funnel/nachrichten/max.jpg", breite: 620, hoehe: 1280, wer: "Max", zitat: "Hätte wirklich nicht gedacht, dass sich dadurch so viel verändern kann." },
+  { bild: "/funnel/nachrichten/lisa.jpg", breite: 619, hoehe: 1280, wer: "Lisa", zitat: "Man ist nicht komplett auf sich allein gestellt, sondern bekommt Unterstützung." },
+  { bild: "/funnel/nachrichten/marilyn-provision.jpg", breite: 753, hoehe: 1280, wer: "Marilyn", zitat: "Das hier ist meine erste Provision, und es zeigt einfach: Es funktioniert!" },
+  { bild: "/funnel/nachrichten/killian.jpg", breite: 617, hoehe: 1280, wer: "Killian", zitat: "Ich bin deutlich disziplinierter geworden und baue mir Schritt für Schritt etwas Eigenes auf." },
   { bild: "/funnel/nachrichten/ellina.jpg", breite: 1054, hoehe: 770, wer: "Ellina" },
   { bild: "/funnel/nachrichten/marilyn-call.jpg", breite: 1280, hoehe: 998, wer: "Marilyn" },
-  { bild: "/funnel/nachrichten/killian.jpg", breite: 617, hoehe: 1280, wer: "Killian" },
 ];
 
 /**

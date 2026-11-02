@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist } from "next/font/google";
+import { Geist, Playfair_Display } from "next/font/google";
 import PixelSkripte from "@/components/funnel/pixel-skripte";
 import "./globals.css";
 
@@ -7,6 +7,14 @@ import "./globals.css";
 const geist = Geist({
   subsets: ["latin"],
   variable: "--font-geist",
+  display: "swap",
+});
+
+// Serif-Überschriften wie auf connectundcollect.de.
+const serif = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["600", "700"],
+  variable: "--font-serif",
   display: "swap",
 });
 
@@ -38,7 +46,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="de" className={`antialiased ${geist.variable}`}>
+    <html lang="de" className={`antialiased ${geist.variable} ${serif.variable}`}>
       <body className="funnel">
         {children}
         <PixelSkripte />

@@ -2,8 +2,8 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import VideoFunnel from "@/components/funnel/video-funnel";
-import { Abschnitt, Fuss, Leiste, Marke, Nachrichten, VideoStimmen } from "@/components/funnel/teile";
-import { FREISCHALTEN_AB, GESPRAECHE, LEAD_COOKIE, VIDEO_POSTER, VIDEO_URL } from "@/lib/funnel";
+import { Fuss, Leiste, Marke, StimmenKarten, Umsaetze } from "@/components/funnel/teile";
+import { FREISCHALTEN_AB, LEAD_COOKIE, VIDEO_LAENGE, VIDEO_POSTER, VIDEO_URL } from "@/lib/funnel";
 import { cookieLesen } from "@/lib/funnel-leads";
 import { testmodus } from "@/lib/testmodus";
 
@@ -28,46 +28,49 @@ export default async function VideoSeite({
   const schwelle = schwelleAus(params.ab, test);
   const ziel = Math.round(schwelle * 100);
   const startFrei = test && params.frei === "1";
+  // „15 Minuten“ → „15 min“ wie bei connectundcollect.
+  const laenge = VIDEO_LAENGE.replace(/\s*Minuten?$/i, " min");
 
   return (
-    <main className="pb-24 md:pb-0">
+    <main className="pb-24">
       {test && (
         <Link href="/vorschau" className="block bg-white px-4 py-1.5 text-center text-[12px] font-medium text-black">
           Testmodus · {startFrei ? "Erstgespräch freigeschaltet" : `Schwelle ${ziel} %`} · alle Seiten →
         </Link>
       )}
-      <Leiste>Schau das Training bis zum Ende · danach kannst du eins von {GESPRAECHE} Erstgesprächen buchen</Leiste>
+      <Leiste>Der anfängerfreundliche Weg, mit fertigen Videos online dein erstes eigenes Geld zu verdienen</Leiste>
 
       <section className="relative px-4 pb-6 pt-7 md:pt-10">
         <div className="cg-schein" />
         <div className="relative mx-auto flex max-w-5xl flex-col items-center text-center">
           <Marke />
-          <h1 className="cg-h1 mt-7 max-w-4xl md:mt-9">
-            {lead.vorname ? `${lead.vorname}, dein` : "Dein"} Training ist <span className="cg-rot">bereit</span>.
+          <h1 className="cg-serif mt-7 max-w-3xl text-[30px] md:mt-9 md:text-[48px]">
+            Schau dir das Videotraining{laenge && <span className="whitespace-nowrap"> ({laenge})</span>}
+            <br />
+            jetzt an, bevor ich es bald offline nehme…
           </h1>
-          <p className="cg-text mt-4 max-w-2xl text-[16px] md:text-[18px]">
-            Nimm dir die Zeit, schalte den Ton an und schau bis zum Schluss. Danach weißt du genau, wie Circle Generation{" "}
-            <span aria-hidden>⭕️</span> funktioniert und ob es zu dir passt.
-          </p>
 
           <div className="mt-8 w-full max-w-4xl md:mt-10">
             <VideoFunnel src={VIDEO_URL} poster={VIDEO_POSTER} schwelle={schwelle} vorname={lead.vorname} email={lead.email} startFrei={startFrei} />
           </div>
 
-          <p className="mt-12 text-[15px] font-medium text-white/40 md:text-lg">↓ Das sagen die, die es bereits machen ↓</p>
+          <p className="mt-14 text-[15px] font-medium text-white/50 md:text-lg">↓ Das sagen die, die es bereits nutzen ↓</p>
         </div>
       </section>
 
-      <Abschnitt tag="Echte Ergebnisse" titel="Das sagen die, die es schon machen">
-        <VideoStimmen />
-      </Abschnitt>
+      <section className="px-4 pb-16 md:pb-20">
+        <div className="mx-auto max-w-6xl">
+          <StimmenKarten />
+        </div>
+      </section>
 
-      <Abschnitt tag="Aus der Community" titel="Nachrichten, die uns jede Woche erreichen">
-        <Nachrichten />
-        <p className="mt-6 text-center text-[12px] text-white/40">
-          Echte Nachrichten aus der Community. Ergebnisse sind nicht garantiert und variieren individuell.
-        </p>
-      </Abschnitt>
+      <section className="px-4 pb-20 md:pb-28">
+        <div className="mx-auto max-w-6xl">
+          <h2 className="cg-serif mb-8 text-center text-[24px] md:text-[32px]">Ergebnisse von Circle Generation:</h2>
+          <Umsaetze />
+          <p className="mt-6 text-center text-[12px] text-white/40">Ergebnisse sind nicht garantiert und variieren individuell.</p>
+        </div>
+      </section>
 
       <Fuss />
     </main>

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { CALENDLY_URL, SPEICHER } from "@/lib/funnel";
 import { pixel } from "@/lib/pixel";
 import GatedVideo, { ereignis, type FreiGrund } from "./gated-video";
-import { Haken, Schloss } from "./teile";
+import { Haken } from "./teile";
 import Termin from "./termin";
 
 function lesen(k: string): string {
@@ -72,74 +72,43 @@ export default function VideoFunnel({
   }, []);
 
   const prozent = Math.round(anteil * 100);
-  const ziel = Math.round(schwelle * 100);
 
   return (
     <>
       <GatedVideo src={src} poster={poster} schwelle={schwelle} frei={frei} onAnteil={setAnteil} onFrei={freischalten} />
 
-      <div className="mx-auto mt-5 w-full max-w-3xl" aria-live="polite">
-        <div className="mb-2 flex items-center justify-between text-[13px] md:text-sm">
-          <span className="font-medium">
-            Dein Fortschritt: <span className="tabular-nums">{prozent} %</span>
-          </span>
-          <span className={frei ? "font-medium text-[#ff2e32]" : "text-white/55"}>
-            {frei ? "✓ Erstgespräch freigeschaltet" : `Noch ${Math.max(ziel - prozent, 0)} % bis zur Freischaltung`}
-          </span>
-        </div>
-        <div className="cg-fortschritt">
-          <div className="cg-fuellung" style={{ width: `${frei ? Math.max(prozent, ziel) : prozent}%` }} />
-          <div className="cg-marke" style={{ left: `${ziel}%` }} title={`${ziel} %`} />
-        </div>
-      </div>
-
-      <div className="mx-auto mt-8 w-full max-w-3xl md:mt-10">
-        {!frei ? (
-          <Gesperrt ziel={ziel} prozent={prozent} />
-        ) : CALENDLY_URL ? (
-          freiSeit !== null && <Termin vorname={kontakt.vorname} email={kontakt.email} freiSeit={freiSeit} />
-        ) : (
-          <Anmeldung vornameServer={vornameServer} emailServer={emailServer} anteil={anteil} />
+      {/* Wie connectundcollect.de: unter dem Video nichts, bis das Training geschaut ist. Dann der Button. */}
+      <div className="mx-auto w-full max-w-3xl" aria-live="polite">
+        {frei && (
+          <>
+            <div className="mt-8 flex justify-center">
+              <a href={CALENDLY_URL ? "#termin" : "#anmeldung"} className="cg-btn px-10 py-4 text-[17px] md:text-[19px]">
+                → JETZT ERSTGESPRÄCH SICHERN
+              </a>
+            </div>
+            <p className="mt-3 text-[13px] text-white/50">Kostenlos und unverbindlich · wenige Plätze frei</p>
+            <div className="mt-10">
+              {CALENDLY_URL ? (
+                freiSeit !== null && <Termin vorname={kontakt.vorname} email={kontakt.email} freiSeit={freiSeit} />
+              ) : (
+                <Anmeldung vornameServer={vornameServer} emailServer={emailServer} anteil={anteil} />
+              )}
+            </div>
+          </>
         )}
+        <span className="sr-only">Fortschritt {prozent} %</span>
       </div>
 
       {frei && (
-        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-black/85 px-4 pb-[calc(12px+env(safe-area-inset-bottom))] pt-3 backdrop-blur-md md:hidden">
-          <a href={CALENDLY_URL ? "#termin" : "#anmeldung"} className="cg-btn w-full py-3.5 text-[16px]">
-            Jetzt Erstgespräch buchen ⭕️
-          </a>
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-black/85 px-4 pb-[calc(12px+env(safe-area-inset-bottom))] pt-3 backdrop-blur-md">
+          <div className="mx-auto max-w-3xl">
+            <a href={CALENDLY_URL ? "#termin" : "#anmeldung"} className="cg-btn w-full py-3.5 text-[16px]">
+              → JETZT ERSTGESPRÄCH SICHERN
+            </a>
+          </div>
         </div>
       )}
     </>
-  );
-}
-
-function Gesperrt({ ziel, prozent }: { ziel: number; prozent: number }) {
-  return (
-    <div className="cg-karte cg-gesperrt p-6 md:p-8">
-      <div className="cg-unscharf" aria-hidden>
-        <div className="mb-4 h-7 w-2/3 rounded-lg bg-white/20" />
-        <div className="grid gap-3 sm:grid-cols-2">
-          <div className="h-12 rounded-xl bg-white/10" />
-          <div className="h-12 rounded-xl bg-white/10" />
-          <div className="h-12 rounded-xl bg-white/10" />
-          <div className="h-12 rounded-xl bg-white/10" />
-        </div>
-        <div className="mt-4 h-14 rounded-full bg-[#ff2e32]/40" />
-      </div>
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 px-6 text-center">
-        <span className="grid h-14 w-14 place-items-center rounded-full border border-white/15 bg-black/60">
-          <Schloss className="h-6 w-6 text-[#ff2e32]" />
-        </span>
-        <p className="text-[19px] font-semibold tracking-[-0.02em] md:text-[22px]">
-          Der Button erscheint, sobald du das Training geschaut hast.
-        </p>
-        <p className="cg-text max-w-md text-[15px]">
-          Ab {ziel} % kannst du hier dein kostenloses Erstgespräch buchen.
-          {prozent > 0 && <span className="text-white/80"> Du hast schon {prozent} % geschafft.</span>}
-        </p>
-      </div>
-    </div>
   );
 }
 

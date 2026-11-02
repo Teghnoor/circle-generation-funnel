@@ -6,21 +6,20 @@ import {
   Marke,
   Umsaetze,
 } from "@/components/funnel/teile";
-import { GESPRAECHE, VIDEO_LAENGE, VIDEO_POSTER } from "@/lib/funnel";
+import { VIDEO_POSTER } from "@/lib/funnel";
 
 export default function StartSeite() {
   return (
     <main className="pb-24 md:pb-0">
       <HerkunftMerken />
-      <Leiste>Kostenloses Training · aktuell nur {GESPRAECHE} Erstgespräche frei</Leiste>
+      <Leiste>Achtung: Dieses kostenlose Training wird bald offline genommen.</Leiste>
 
       <section className="relative px-4 pb-10 pt-8 md:pb-16 md:pt-12">
         <div className="cg-schein" />
         <div className="relative mx-auto flex max-w-5xl flex-col items-center text-center">
           <Marke />
-          <h1 className="cg-h1 mt-7 max-w-4xl md:mt-9">
-            Schau dir das <span className="cg-rot">kostenlose Videotraining</span>
-            {VIDEO_LAENGE ? ` (${VIDEO_LAENGE})` : ""} jetzt an.
+          <h1 className="cg-serif mt-7 max-w-4xl text-[34px] md:mt-9 md:text-[56px]">
+            Schau dir das kostenlose Videotraining jetzt an, bevor ich es offline nehme…
           </h1>
           <p className="cg-text mt-5 max-w-2xl text-[17px] md:text-[19px]">
             Wie junge Leute mit fertigen Videos und unserem Vertriebsteam ihr erstes Geld online verdienen. Ohne Gesicht, ohne Vorwissen.
@@ -30,14 +29,14 @@ export default function StartSeite() {
             <OptinAusloeser art="video" poster={VIDEO_POSTER} />
           </div>
 
-          <div className="mt-8 hidden flex-col items-center gap-3 md:flex">
-            <OptinAusloeser>JETZT GRATIS ANSCHAUEN ⭕️</OptinAusloeser>
+          <div className="mt-8 flex flex-col items-center gap-3">
+            <OptinAusloeser>→ JETZT GRATIS ANSCHAUEN</OptinAusloeser>
           </div>
-          <p className="mt-4 text-[13px] text-white/50">Kostenlos · Ohne Gesicht · Ohne Vorwissen</p>
+          <p className="mt-4 text-[13px] text-white/50">Die Plätze sind begrenzt, sichere dir jetzt deinen Zugang.</p>
         </div>
       </section>
 
-      <Abschnitt tag="Echte Umsätze" titel="Allein im Oktober">
+      <Abschnitt tag="Echte Umsätze" titel="Ergebnisse von Circle Generation: allein im Oktober">
         <Umsaetze />
         <p className="mt-6 text-center text-[12px] text-white/40">
           Echte Screenshots, Kundendaten unkenntlich. Ergebnisse sind nicht garantiert und variieren individuell.
@@ -46,7 +45,7 @@ export default function StartSeite() {
 
       <section className="px-4 pb-20 pt-4 text-center">
         <div className="mt-4">
-          <OptinAusloeser>JETZT GRATIS ANSCHAUEN ⭕️</OptinAusloeser>
+          <OptinAusloeser>→ JETZT GRATIS ANSCHAUEN</OptinAusloeser>
         </div>
       </section>
 

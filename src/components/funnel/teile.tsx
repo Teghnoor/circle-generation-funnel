@@ -319,3 +319,31 @@ export function PlayIcon({ className = "" }: { className?: string }) {
     </svg>
   );
 }
+
+/** WhatsApp-Nachrichten als Karten mit Name und Zitat, seitlich scrollbar (wie connectundcollect.de). */
+export function StimmenKarten() {
+  const karten = NACHRICHTEN.filter((n) => n.zitat);
+  if (karten.length === 0) return null;
+  return (
+    <div className="cg-stimmen -mx-4 flex gap-4 overflow-x-auto px-4 pb-2 md:mx-0">
+      {karten.map((n) => (
+        <figure key={n.bild} className="cg-karte flex w-[260px] shrink-0 flex-col overflow-hidden md:w-[300px]">
+          <div className="relative h-[340px] overflow-hidden md:h-[400px]">
+            <Image
+              src={n.bild}
+              alt={`Nachricht von ${n.wer}`}
+              width={n.breite}
+              height={n.hoehe}
+              sizes="300px"
+              className="block h-full w-full object-cover object-bottom"
+            />
+          </div>
+          <figcaption className="flex flex-1 flex-col gap-2 border-t border-white/10 bg-white/[0.03] p-4 text-left">
+            <span className="text-[15px] font-semibold">{n.wer}</span>
+            <span className="cg-text text-[14px] italic leading-snug">„{n.zitat}“</span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  );
+}

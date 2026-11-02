@@ -264,3 +264,21 @@ body {
   .cg-laufband { overflow-x: auto; }
   .cg-laufband-spur { animation: none; }
 }
+
+/* Aufbau wie connectundcollect.de (02.11.2026) */
+.cg-serif {
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.12;
+}
+.cg-stimmen {
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.cg-stimmen::-webkit-scrollbar {
+  display: none;
+}
+.cg-stimmen > * {
+  scroll-snap-align: center;
+}
