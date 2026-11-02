@@ -113,10 +113,6 @@ export function Fuss() {
   return (
     <footer className="border-t border-white/10 px-4 py-10 text-center">
       <Marke klein />
-      <p className="cg-text mx-auto mt-5 max-w-2xl text-[13px]">
-        Ergebnisse sind nicht garantiert und hängen von deinem Einsatz ab. Diese Seite ist kein Teil von Facebook, Instagram
-        oder TikTok und wird nicht von Meta oder ByteDance unterstützt.
-      </p>
       <nav className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[13px] text-white/60">
         <a href={LINKS.impressum} className="hover:text-white">Impressum</a>
         <a href={LINKS.datenschutz} className="hover:text-white">Datenschutz</a>
