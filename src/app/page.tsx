@@ -5,7 +5,6 @@ import {
   Leiste,
   Marke,
   Umsaetze,
-  VideoStimmen,
 } from "@/components/funnel/teile";
 import { GESPRAECHE, VIDEO_LAENGE, VIDEO_POSTER } from "@/lib/funnel";
 
@@ -37,14 +36,6 @@ export default function StartSeite() {
           <p className="mt-4 text-[13px] text-white/50">Kostenlos · Ohne Gesicht · Ohne Vorwissen</p>
         </div>
       </section>
-
-      <section className="px-4 pt-2 text-center">
-        <p className="text-[15px] font-medium text-white/50 md:text-lg">↓ Das sagen die, die es bereits machen ↓</p>
-      </section>
-
-      <Abschnitt id="stimmen" tag="Echte Ergebnisse" titel="Das sagen die, die es schon machen">
-        <VideoStimmen />
-      </Abschnitt>
 
       <Abschnitt tag="Echte Umsätze" titel="Allein im Oktober">
         <Umsaetze />
