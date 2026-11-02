@@ -1,8 +1,9 @@
 "use client";
 
-import { createElement, useEffect, useRef } from "react";
+import { createElement, useEffect, useRef, useState } from "react";
 import { SPEICHER } from "@/lib/funnel";
 import { ereignis, type FreiGrund } from "./gated-video";
+import { PlayIcon } from "./teile";
 
 /**
  * Das Trainingsvideo über Wistia (Teghs Embed). Gezählt wird wie beim eigenen
@@ -29,12 +30,15 @@ function skript(src: string, modul = false) {
 
 export default function WistiaVideo({
   mediaId,
+  thumbnail,
   schwelle,
   frei,
   onAnteil,
   onFrei,
 }: {
   mediaId: string;
+  /** Eigenes Startbild über dem Player, bis jemand auf Play klickt. */
+  thumbnail?: string;
   schwelle: number;
   frei: boolean;
   onAnteil: (anteil: number) => void;
@@ -47,6 +51,7 @@ export default function WistiaVideo({
   const gemeldet = useRef(new Set<number>());
   const gestartet = useRef(false);
   const freiRef = useRef(frei);
+  const [bild, setBild] = useState(Boolean(thumbnail));
   useEffect(() => {
     freiRef.current = frei;
   }, [frei]);
@@ -99,9 +104,29 @@ export default function WistiaVideo({
   }, [mediaId, schwelle, onAnteil, onFrei]);
 
   return (
-    <div className="cg-video-rahmen w-full overflow-hidden">
+    <div className="cg-video-rahmen relative w-full overflow-hidden">
       <style>{`wistia-player[media-id='${mediaId}']:not(:defined){background:center / contain no-repeat url('https://fast.wistia.com/embed/medias/${mediaId}/swatch');display:block;filter:blur(5px);padding-top:56.25%;}`}</style>
       {createElement("wistia-player", { ref: el, "media-id": mediaId, aspect: "1.7777777777777777" })}
+      {bild && thumbnail && (
+        <button
+          type="button"
+          aria-label="Video starten"
+          className="absolute inset-0 z-10 grid h-full w-full cursor-pointer place-items-center bg-black"
+          onClick={() => {
+            setBild(false);
+            const v = el.current as (WistiaEl & { play?: () => Promise<void> | void }) | null;
+            try {
+              void v?.play?.();
+            } catch {}
+          }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={thumbnail} alt="" className="absolute inset-0 h-full w-full object-cover" />
+          <span className="cg-play relative">
+            <PlayIcon className="ml-1 h-9 w-9 text-white" />
+          </span>
+        </button>
+      )}
     </div>
   );
 }

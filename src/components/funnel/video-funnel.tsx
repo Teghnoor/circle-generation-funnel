@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { CALENDLY_URL, SPEICHER, WISTIA_ID } from "@/lib/funnel";
+import { CALENDLY_URL, SPEICHER, WISTIA_ID, WISTIA_THUMBNAIL } from "@/lib/funnel";
 import { pixel } from "@/lib/pixel";
 import GatedVideo, { ereignis, type FreiGrund } from "./gated-video";
 import { Haken } from "./teile";
@@ -77,7 +77,7 @@ export default function VideoFunnel({
   return (
     <>
       {WISTIA_ID ? (
-        <WistiaVideo mediaId={WISTIA_ID} schwelle={schwelle} frei={frei} onAnteil={setAnteil} onFrei={freischalten} />
+        <WistiaVideo mediaId={WISTIA_ID} thumbnail={WISTIA_THUMBNAIL} schwelle={schwelle} frei={frei} onAnteil={setAnteil} onFrei={freischalten} />
       ) : (
         <GatedVideo src={src} poster={poster} schwelle={schwelle} frei={frei} onAnteil={setAnteil} onFrei={freischalten} />
       )}
