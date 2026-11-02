@@ -150,3 +150,17 @@ export const NACHRICHTEN: { bild: string; breite: number; hoehe: number; wer: st
  * eintragen — solange die Liste leer ist, wird die Leiste nicht angezeigt.
  */
 export const ZAHLEN: { wert: string; text: string }[] = [];
+
+/**
+ * Umsatz-Screenshots (Copecart/Digistore, Oktober 2026, 02.11. von Tegh).
+ * Bestellnummern und Kundendaten sind unkenntlich, Tabellenkopf abgeschnitten.
+ * Laufen als Band von links nach rechts.
+ */
+export const UMSAETZE: { bild: string; breite: number; hoehe: number }[] = [
+  { bild: "/funnel/umsaetze/oktober-1.jpg", breite: 1360, hoehe: 720 },
+  { bild: "/funnel/umsaetze/oktober-2.jpg", breite: 656, hoehe: 720 },
+  { bild: "/funnel/umsaetze/oktober-3.jpg", breite: 1454, hoehe: 720 },
+  { bild: "/funnel/umsaetze/oktober-4.jpg", breite: 616, hoehe: 720 },
+  { bild: "/funnel/umsaetze/oktober-5.jpg", breite: 1466, hoehe: 720 },
+  { bild: "/funnel/umsaetze/oktober-6.jpg", breite: 1150, hoehe: 720 },
+];

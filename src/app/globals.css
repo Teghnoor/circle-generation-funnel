@@ -245,3 +245,22 @@ body {
 .cg-faq-plus {
   transition: transform 0.2s;
 }
+
+/* Umsatz-Laufband: Spur enthält die Bilder doppelt, fährt von -50 % auf 0 (links → rechts). */
+.cg-laufband {
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+.cg-laufband-spur {
+  animation: cg-laufband 45s linear infinite;
+}
+.cg-laufband:hover .cg-laufband-spur {
+  animation-play-state: paused;
+}
+@keyframes cg-laufband {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cg-laufband { overflow-x: auto; }
+  .cg-laufband-spur { animation: none; }
+}

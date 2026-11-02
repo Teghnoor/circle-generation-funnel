@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { BEWEISE, FAQ, NACHRICHTEN, LINKS, NUR_FUER_DICH_WENN, REISE, SO_FUNKTIONIERT, VIDEO_STIMMEN, ZAHLEN } from "@/lib/funnel";
+import { BEWEISE, FAQ, NACHRICHTEN, LINKS, NUR_FUER_DICH_WENN, REISE, SO_FUNKTIONIERT, UMSAETZE, VIDEO_STIMMEN, ZAHLEN } from "@/lib/funnel";
 
 /** Bausteine, die Start, /video und /danke teilen. */
 
@@ -248,6 +248,34 @@ export function Nachrichten() {
           />
         </figure>
       ))}
+    </div>
+  );
+}
+
+/** Umsatz-Screenshots als endloses Laufband, Richtung links → rechts. */
+export function Umsaetze() {
+  if (UMSAETZE.length === 0) return null;
+  const runde = [...UMSAETZE, ...UMSAETZE];
+  return (
+    <div className="cg-laufband -mx-4 overflow-hidden md:mx-0">
+      <div className="cg-laufband-spur flex w-max gap-3">
+        {runde.map((u, i) => (
+          <figure
+            key={`${u.bild}-${i}`}
+            aria-hidden={i >= UMSAETZE.length}
+            className="cg-karte h-[220px] shrink-0 overflow-hidden md:h-[300px]"
+          >
+            <Image
+              src={u.bild}
+              alt={i < UMSAETZE.length ? "Umsatz-Screenshot Oktober 2026" : ""}
+              width={u.breite}
+              height={u.hoehe}
+              sizes="(min-width: 768px) 620px, 420px"
+              className="block h-full w-auto"
+            />
+          </figure>
+        ))}
+      </div>
     </div>
   );
 }

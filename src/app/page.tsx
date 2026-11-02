@@ -1,10 +1,10 @@
 import { HerkunftMerken, OptinAusloeser } from "@/components/funnel/optin";
 import {
-  Nachrichten,
   Abschnitt,
   Fuss,
   Leiste,
   Marke,
+  Umsaetze,
   VideoStimmen,
 } from "@/components/funnel/teile";
 import { GESPRAECHE, VIDEO_LAENGE, VIDEO_POSTER } from "@/lib/funnel";
@@ -46,10 +46,10 @@ export default function StartSeite() {
         <VideoStimmen />
       </Abschnitt>
 
-      <Abschnitt tag="Aus der Community" titel="Nachrichten, die uns jede Woche erreichen">
-        <Nachrichten />
+      <Abschnitt tag="Echte Umsätze" titel="Allein im Oktober">
+        <Umsaetze />
         <p className="mt-6 text-center text-[12px] text-white/40">
-          Echte Nachrichten aus der Community. Ergebnisse sind nicht garantiert und variieren individuell.
+          Echte Screenshots, Kundendaten unkenntlich. Ergebnisse sind nicht garantiert und variieren individuell.
         </p>
       </Abschnitt>
 
