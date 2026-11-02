@@ -44,7 +44,7 @@ export default async function VideoSeite({
         <div className="cg-schein" />
         <div className="relative mx-auto flex max-w-5xl flex-col items-center text-center">
           <Marke />
-          <h1 className="cg-serif mt-7 max-w-3xl text-[30px] md:mt-9 md:text-[48px]">
+          <h1 className="cg-h1 mt-7 max-w-3xl md:mt-9">
             Schau dir das Videotraining{laenge && <span className="whitespace-nowrap"> ({laenge})</span>}
             <br />
             jetzt an, bevor ich es bald offline nehme…
@@ -66,7 +66,7 @@ export default async function VideoSeite({
 
       <section className="px-4 pb-20 md:pb-28">
         <div className="mx-auto max-w-6xl">
-          <h2 className="cg-serif mb-8 text-center text-[24px] md:text-[32px]">Ergebnisse von Circle Generation:</h2>
+          <h2 className="cg-h2 mb-8 text-center">Ergebnisse von Circle Generation:</h2>
           <Umsaetze />
           <p className="mt-6 text-center text-[12px] text-white/40">Ergebnisse sind nicht garantiert und variieren individuell.</p>
         </div>

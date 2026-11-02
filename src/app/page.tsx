@@ -18,7 +18,7 @@ export default function StartSeite() {
         <div className="cg-schein" />
         <div className="relative mx-auto flex max-w-5xl flex-col items-center text-center">
           <Marke />
-          <h1 className="cg-serif mt-7 max-w-4xl text-[34px] md:mt-9 md:text-[56px]">
+          <h1 className="cg-h1 mt-7 max-w-4xl md:mt-9">
             Schau dir das kostenlose Videotraining jetzt an, bevor ich es offline nehme…
           </h1>
           <p className="cg-text mt-5 max-w-2xl text-[17px] md:text-[19px]">
