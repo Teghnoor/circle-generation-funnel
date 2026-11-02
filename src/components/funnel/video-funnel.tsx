@@ -2,11 +2,12 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { CALENDLY_URL, SPEICHER } from "@/lib/funnel";
+import { CALENDLY_URL, SPEICHER, WISTIA_ID } from "@/lib/funnel";
 import { pixel } from "@/lib/pixel";
 import GatedVideo, { ereignis, type FreiGrund } from "./gated-video";
 import { Haken } from "./teile";
 import Termin from "./termin";
+import WistiaVideo from "./wistia-video";
 
 function lesen(k: string): string {
   try {
@@ -75,7 +76,11 @@ export default function VideoFunnel({
 
   return (
     <>
-      <GatedVideo src={src} poster={poster} schwelle={schwelle} frei={frei} onAnteil={setAnteil} onFrei={freischalten} />
+      {WISTIA_ID ? (
+        <WistiaVideo mediaId={WISTIA_ID} schwelle={schwelle} frei={frei} onAnteil={setAnteil} onFrei={freischalten} />
+      ) : (
+        <GatedVideo src={src} poster={poster} schwelle={schwelle} frei={frei} onAnteil={setAnteil} onFrei={freischalten} />
+      )}
 
       {/* Wie connectundcollect.de: unter dem Video nichts, bis das Training geschaut ist. Dann der Button. */}
       <div className="mx-auto w-full max-w-3xl" aria-live="polite">
