@@ -104,7 +104,7 @@ export default function WistiaVideo({
   }, [mediaId, schwelle, onAnteil, onFrei]);
 
   return (
-    <div className="cg-video-rahmen relative w-full overflow-hidden">
+    <div className="relative w-full overflow-hidden rounded-[20px] bg-[#050505]">
       <style>{`wistia-player[media-id='${mediaId}']:not(:defined){background:center / contain no-repeat url('https://fast.wistia.com/embed/medias/${mediaId}/swatch');display:block;filter:blur(5px);padding-top:56.25%;}`}</style>
       {createElement("wistia-player", { ref: el, "media-id": mediaId, aspect: "1.7777777777777777" })}
       {bild && thumbnail && (
