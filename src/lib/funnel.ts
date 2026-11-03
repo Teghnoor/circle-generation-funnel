@@ -18,7 +18,7 @@ export const FREISCHALTEN_AB = 0.8;
 export const VIDEO_URL = process.env.NEXT_PUBLIC_FUNNEL_VIDEO_URL || "/funnel/platzhalter.mp4";
 /** Standbild aus dem Intro-Film. Wenn der VSL steht, gern durch ein festes Thumbnail ersetzen. */
 /** Wistia-Media-ID der VSL. Gesetzt = Wistia-Player statt eigener mp4. */
-export const WISTIA_ID = process.env.NEXT_PUBLIC_FUNNEL_WISTIA_ID || "4xj57qoim2";
+export const WISTIA_ID = process.env.NEXT_PUBLIC_FUNNEL_WISTIA_ID || "5sm8v69d2p";
 export const WISTIA_THUMBNAIL = "/funnel/koray-thumbnail.jpg";
 export const VIDEO_POSTER = process.env.NEXT_PUBLIC_FUNNEL_VIDEO_POSTER || "/funnel/training-poster.jpg";
 /** Für Hinweise wie „ca. 15 Minuten". Leer = nicht anzeigen. */
