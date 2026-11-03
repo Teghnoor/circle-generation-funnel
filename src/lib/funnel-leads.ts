@@ -1,3 +1,4 @@
+import { createHmac } from "node:crypto";
 import { put } from "@vercel/blob";
 import { LEAD_COOKIE } from "./funnel";
 
@@ -67,11 +68,19 @@ export function text(roh: unknown, max: number): string {
 async function webhookSenden(d: LeadDaten): Promise<boolean> {
   const url = process.env.FUNNEL_WEBHOOK_URL;
   if (!url) return false;
+  const body = JSON.stringify(d);
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  // Signatur fuer die Circle-Generation-Plattform: "t=<unix>,v1=<hmac>" ueber "<t>.<body>".
+  const geheim = process.env.FUNNEL_WEBHOOK_SECRET;
+  if (geheim) {
+    const t = Math.floor(Date.now() / 1000);
+    headers["x-funnel-signature"] = `t=${t},v1=${createHmac("sha256", geheim).update(`${t}.${body}`).digest("hex")}`;
+  }
   try {
     const r = await fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(d),
+      headers,
+      body,
       signal: AbortSignal.timeout(6000),
     });
     if (!r.ok) console.error(`[funnel] Webhook antwortet ${r.status} für ${d.typ} ${d.id}`);
@@ -85,7 +94,10 @@ async function webhookSenden(d: LeadDaten): Promise<boolean> {
 async function sichern(d: LeadDaten): Promise<boolean> {
   if (!process.env.BLOB_READ_WRITE_TOKEN) return false;
   try {
-    await put(`funnel/${d.typ}/${d.id}.json`, JSON.stringify(d), {
+    // Buchung ohne Cookie hat keine Lead-ID: dann die Calendly-Teilnehmer-URI,
+    // sonst ueberschreiben sich solche Termine gegenseitig.
+    const name = d.id || String(d.teilnehmer ?? "").split("/").pop() || `ohne-id-${Date.now()}`;
+    await put(`funnel/${d.typ}/${name}.json`, JSON.stringify(d), {
       access: "private",
       addRandomSuffix: false,
       allowOverwrite: true,

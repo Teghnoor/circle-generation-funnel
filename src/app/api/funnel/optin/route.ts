@@ -54,7 +54,7 @@ export async function POST(req: Request) {
   const res = NextResponse.json({ ok: true });
   // Herkunft mitnehmen, damit auch Freischaltung und Termin der Fanpage zugeordnet werden.
   const herkunft: Record<string, string> = {};
-  for (const k of ["src", "utm_source", "utm_campaign", "utm_medium"]) if (utm[k]) herkunft[k] = utm[k].slice(0, 80);
+  for (const k of ["src", "ref", "utm_source", "utm_campaign", "utm_medium", "utm_content"]) if (utm[k]) herkunft[k] = utm[k].slice(0, 80);
   res.cookies.set(LEAD_COOKIE, cookieSchreiben({ id, vorname, email, herkunft }), COOKIE_OPTIONEN);
   return res;
 }

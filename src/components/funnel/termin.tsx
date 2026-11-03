@@ -81,6 +81,10 @@ export default function Termin({ vorname, email, freiSeit }: { vorname: string; 
     if (quelle) u.searchParams.set("utm_source", quelle);
     if (h.utm_campaign) u.searchParams.set("utm_campaign", h.utm_campaign);
     if (h.utm_medium) u.searchParams.set("utm_medium", h.utm_medium);
+    // Kennung des Mitglieds: Calendly liefert utm_content im Webhook mit,
+    // so landet der Termin auf der Plattform beim richtigen Mitglied.
+    const ref = h.ref || h.utm_content;
+    if (ref) u.searchParams.set("utm_content", ref);
     return u.toString();
     // vorname/email reichen; die Herkunft ändert sich auf dieser Seite nicht.
   }, [vorname, email]);

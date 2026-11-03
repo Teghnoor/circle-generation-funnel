@@ -12,20 +12,30 @@ function speichern(k: string, v: string) {
   } catch {}
 }
 
+/** So lange bleibt die Mitglieds-Kennung (?ref=) gemerkt, auch ohne Link (Bauplan: 30 Tage). */
+const REF_TAGE = 30;
+
 /**
  * Herkunft (?src=fanpage3, utm_…) aus dem Link. Steht im Link nichts, gilt die
  * zuletzt gemerkte — so geht die Quelle nicht verloren, wenn jemand die Seite
- * später ohne Parameter wieder öffnet.
+ * später ohne Parameter wieder öffnet. Die Kennung des Mitglieds (?ref= aus dem
+ * persönlichen Link) wird getrennt 30 Tage gehalten: ein späterer Besuch über
+ * eine Anzeige ohne ref darf die Zuordnung nicht löschen.
  */
 function herkunftLesen(): Record<string, string> {
   const aktuell: Record<string, string> = {};
   for (const [k, v] of new URLSearchParams(window.location.search)) if (HERKUNFT_PARAMETER.test(k)) aktuell[k] = v.slice(0, 200);
   try {
-    if (Object.keys(aktuell).length) {
-      localStorage.setItem(SPEICHER.herkunft, JSON.stringify(aktuell));
-      return aktuell;
+    if (aktuell.ref) localStorage.setItem(SPEICHER.ref, JSON.stringify({ wert: aktuell.ref, bis: Date.now() + REF_TAGE * 864e5 }));
+    const gespeichert: Record<string, string> = Object.keys(aktuell).length
+      ? aktuell
+      : JSON.parse(localStorage.getItem(SPEICHER.herkunft) || "{}");
+    if (Object.keys(aktuell).length) localStorage.setItem(SPEICHER.herkunft, JSON.stringify(aktuell));
+    if (!gespeichert.ref) {
+      const r = JSON.parse(localStorage.getItem(SPEICHER.ref) || "null");
+      if (r?.wert && r.bis > Date.now()) gespeichert.ref = String(r.wert);
     }
-    return JSON.parse(localStorage.getItem(SPEICHER.herkunft) || "{}");
+    return gespeichert;
   } catch {
     return aktuell;
   }

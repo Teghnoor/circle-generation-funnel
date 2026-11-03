@@ -8,7 +8,7 @@ Eigenständiger Funnel (Next.js 16, Vercel):
 
 Texte, FAQ, Bilder, Clips, Zahlenleiste, Schwelle: `src/lib/funnel.ts`. Bilder und Clips liegen in `public/funnel/`.
 
-**Herkunft:** Links mit `?src=fanpage3` (und `utm_*`) werden beim ersten Besuch gemerkt und mit jedem Webhook-Ereignis mitgeschickt; an Calendly geht `src` als `utm_source`.
+**Herkunft:** Links mit `?src=fanpage3` (und `utm_*`) werden beim ersten Besuch gemerkt und mit jedem Webhook-Ereignis mitgeschickt; an Calendly geht `src` als `utm_source`. Die Mitglieds-Kennung `?ref=` aus den persönlichen Links der Plattform (`/g/<slug>`) bleibt 30 Tage gemerkt und geht an Calendly als `utm_content`.
 
 ## Umgebungsvariablen (Vercel → Settings → Environment Variables)
 
@@ -24,6 +24,7 @@ Texte, FAQ, Bilder, Clips, Zahlenleiste, Schwelle: `src/lib/funnel.ts`. Bilder u
 | `NEXT_PUBLIC_META_PIXEL_ID`, `NEXT_PUBLIC_TIKTOK_PIXEL_ID` | Optional: Pixel. Ereignisse: Lead (Opt-in), ViewContent (80 %), Schedule bzw. CompleteRegistration (Termin). |
 | `NEXT_PUBLIC_SITE_URL` | Eigene Domain, z. B. `https://circlegeneration.com`, damit das Vorschaubild geteilter Links darauf zeigt. |
 | `FUNNEL_WEBHOOK_URL` | Bekommt JSON mit `typ` = `optin`, `video_freigeschaltet`, `termin_gebucht`, `anmeldung`, jeweils mit Herkunft (`src`, `utm_*`). |
+| `FUNNEL_WEBHOOK_SECRET` | Signiert jeden Webhook (Header `x-funnel-signature`). Gleicher Wert wie in der Circle-Generation-Plattform. |
 | `BLOB_READ_WRITE_TOKEN` | Optional: jeder Lead zusätzlich als Datei unter `funnel/<typ>/` im Vercel Blob. |
 | `FUNNEL_TESTMODUS=1` | Testmodus auf Production (siehe unten). Vor dem Schalten von Werbung wieder entfernen. |
 

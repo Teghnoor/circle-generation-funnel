@@ -55,6 +55,8 @@ export const SPEICHER = {
   email: "cg_email",
   /** Herkunft des Besuchers (?src=, utm_…), beim ersten Besuch gemerkt. */
   herkunft: "cg_herkunft",
+  /** Kennung des Mitglieds aus dem persönlichen Link (?ref=), mit Ablaufzeit. */
+  ref: "cg_ref",
 };
 
 /** Link-Parameter, die als Herkunft mitgeschickt werden (z. B. ?src=fanpage3). */
