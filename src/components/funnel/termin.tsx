@@ -19,6 +19,16 @@ function herkunft(): Record<string, string> {
   }
 }
 
+/** Kennung des Mitglieds, nur solange sie gültig ist (30 Tage ab dem Klick auf den Link). */
+function mitgliedRef(): string | null {
+  try {
+    const r = JSON.parse(localStorage.getItem(SPEICHER.ref) || "null");
+    return r?.wert && r.bis > Date.now() ? String(r.wert) : null;
+  } catch {
+    return null;
+  }
+}
+
 /**
  * Nach der Freischaltung: Calendly zum Buchen des Erstgesprächs, ein
  * Countdown für das 48-Stunden-Fenster und — nur wenn die Zahl live aus
@@ -83,7 +93,7 @@ export default function Termin({ vorname, email, freiSeit }: { vorname: string; 
     if (h.utm_medium) u.searchParams.set("utm_medium", h.utm_medium);
     // Kennung des Mitglieds: Calendly liefert utm_content im Webhook mit,
     // so landet der Termin auf der Plattform beim richtigen Mitglied.
-    const ref = h.ref || h.utm_content;
+    const ref = mitgliedRef();
     if (ref) u.searchParams.set("utm_content", ref);
     return u.toString();
     // vorname/email reichen; die Herkunft ändert sich auf dieser Seite nicht.
