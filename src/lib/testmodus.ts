@@ -3,7 +3,7 @@
  * `?ab=0.1` senkt die Schwelle, /vorschau listet alle Seiten.
  *
  * An in der lokalen Entwicklung, auf Vercel-Preview-Deployments und mit
- * FUNNEL_TESTMODUS=1. Auf Production aus — sonst könnte jeder die 80 %
+ * FUNNEL_TESTMODUS=1. Auf Production aus — sonst könnte jeder die 95 %
  * per Link umgehen. Vor dem Schalten von Werbung FUNNEL_TESTMODUS entfernen.
  */
 export function testmodus(): boolean {

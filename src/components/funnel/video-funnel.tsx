@@ -43,7 +43,7 @@ export default function VideoFunnel({
   const [freiSeit, setFreiSeit] = useState<number | null>(null);
   const [kontakt, setKontakt] = useState({ vorname: vornameServer, email: emailServer });
 
-  // Wer schon freigeschaltet war, muss nicht nochmal 80 % schauen.
+  // Wer schon freigeschaltet war, muss nicht nochmal 95 % schauen.
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (lesen(SPEICHER.frei) === "1") setFrei(true);

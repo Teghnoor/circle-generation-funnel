@@ -1,5 +1,5 @@
 /**
- * Circle-Generation-Funnel: / (Opt-in) → /video (Training, ab 80 %
+ * Circle-Generation-Funnel: / (Opt-in) → /video (Training, ab 95 %
  * echter Sehzeit wird die Terminbuchung freigeschaltet) → /danke.
  *
  * Alles, was man vor dem Livegang anfassen muss, steht hier: Video, Schwelle,
@@ -7,8 +7,8 @@
  * hier ablegen.
  */
 
-/** Anteil des Videos, der wirklich geschaut sein muss. Der CTA im VSL kommt bei ca. 13:30 von 15:30. */
-export const FREISCHALTEN_AB = 0.8;
+/** Anteil des Videos, der wirklich geschaut sein muss (Tegh 04.11.: 95 %). */
+export const FREISCHALTEN_AB = 0.95;
 
 /**
  * Das Trainingsvideo (VSL). Am besten eine eigene MP4 (H.264/AAC, „faststart")
