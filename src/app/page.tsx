@@ -19,10 +19,12 @@ export default function StartSeite() {
         <div className="relative mx-auto flex max-w-5xl flex-col items-center text-center">
           <Marke />
           <h1 className="cg-h1 mt-7 max-w-4xl md:mt-9">
-            Schau dir das kostenlose Videotraining jetzt an, bevor ich es offline nehme…
+            Schau dir das kostenlose Videotraining jetzt an, bevor ich es <span className="text-[var(--cg-rot)]">offline nehme…</span>
           </h1>
           <p className="cg-text mt-5 max-w-2xl text-[17px] md:text-[19px]">
-            Wie junge Leute mit fertigen Videos und unserem Vertriebsteam ihr erstes Geld online verdienen. Ohne Gesicht, ohne Vorwissen.
+            Wie ich mit einem System, das 90 % der Arbeit für mich erledigt, seit 13 Monaten mindestens{" "}
+            <span className="font-semibold text-[#2fd36a]">20.509,28 Euro</span> jeden Monat verdiene, ohne Startkapital, ohne
+            Vorerfahrung, neben meinem normalen Alltag.
           </p>
 
           <div className="mt-8 w-full max-w-4xl md:mt-12">

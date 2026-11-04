@@ -47,7 +47,7 @@ export default async function VideoSeite({
           <h1 className="cg-h1 mt-7 max-w-3xl md:mt-9">
             Schau dir das Videotraining{laenge && <span className="whitespace-nowrap"> ({laenge})</span>}
             <br />
-            jetzt an, bevor ich es bald offline nehme…
+            jetzt an, bevor ich es bald <span className="text-[var(--cg-rot)]">offline nehme…</span>
           </h1>
 
           <div className="mt-8 w-full max-w-4xl md:mt-10">
