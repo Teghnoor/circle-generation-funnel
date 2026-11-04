@@ -183,16 +183,19 @@ function OptinFenster({ schliessen }: { schliessen: () => void }) {
 
         <div className="mb-5">
           <h2 id="optin-titel" className="text-[24px] font-semibold tracking-[-0.03em]">
-            Fast geschafft! Letzter Schritt …
+            Fast geschafft! Letzter Schritt…
           </h2>
-          <p className="cg-text mt-1 text-[15px]">Wohin dürfen wir dir den Zugang zum Training schicken?</p>
+          <p className="cg-text mt-1 text-[15px]">
+            Trage deine E-Mail ein, damit wir dir das komplette kostenlose Training direkt zuschicken können. So hast du
+            es für immer gespeichert und kannst es jederzeit wieder anschauen.
+          </p>
         </div>
 
         <form onSubmit={absenden} className="flex flex-col gap-3" noValidate>
           <input
             ref={ersterRef}
             className="cg-eingabe"
-            placeholder="Dein Vorname"
+            placeholder="Vorname"
             autoComplete="given-name"
             value={vorname}
             onChange={(e) => setVorname(e.target.value)}
@@ -203,7 +206,7 @@ function OptinFenster({ schliessen }: { schliessen: () => void }) {
             className="cg-eingabe"
             type="email"
             inputMode="email"
-            placeholder="Deine beste E-Mail-Adresse"
+            placeholder="E-Mail-Adresse"
             autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -233,9 +236,9 @@ function OptinFenster({ schliessen }: { schliessen: () => void }) {
           {fehler && <p className="rounded-xl bg-[#ff2e32]/10 px-3 py-2 text-[14px] text-[#ff7a7c]">{fehler}</p>}
 
           <button type="submit" className="cg-btn mt-2 w-full" disabled={laeuft}>
-            {laeuft ? "Wird freigeschaltet …" : "JETZT GRATIS ANSCHAUEN ⭕️"}
+            {laeuft ? "Wird freigeschaltet …" : "JETZT ANSCHAUEN!"}
           </button>
-          <p className="text-center text-[12px] text-white/40">🔒 Kein Spam. Deine Daten bleiben bei uns.</p>
+          <p className="text-center text-[12px] text-white/40">🔒 Deine Daten nutzen wir nur, um dir das Training zuzuschicken, damit du es dir immer anschauen kannst.</p>
         </form>
       </div>
     </div>

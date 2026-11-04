@@ -12,7 +12,11 @@ export default function StartSeite() {
   return (
     <main className="pb-24 md:pb-0">
       <HerkunftMerken />
-      <Leiste>Achtung: Dieses kostenlose Training wird bald offline genommen.</Leiste>
+      <Leiste>
+        Achtung: Dieses kostenlose Training
+        <br />
+        wird bald <span className="font-bold underline underline-offset-2">offline genommen.</span>
+      </Leiste>
 
       <section className="relative px-4 pb-10 pt-8 md:pb-16 md:pt-12">
         <div className="cg-schein" />
