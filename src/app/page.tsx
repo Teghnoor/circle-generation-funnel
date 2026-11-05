@@ -44,9 +44,6 @@ export default function StartSeite() {
 
       <Abschnitt tag="Echte Umsätze" titel="Ergebnisse von Circle Generation: allein im Oktober">
         <Umsaetze />
-        <p className="mt-6 text-center text-[12px] text-white/40">
-          Echte Screenshots, Kundendaten unkenntlich.
-        </p>
       </Abschnitt>
 
       <section className="px-4 pb-20 pt-4 text-center">
