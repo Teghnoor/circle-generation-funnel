@@ -29,7 +29,7 @@ type WistiaApi = {
   playbackRate?: (r?: number) => number;
 };
 type WistiaEl = HTMLElement & { currentTime?: number; duration?: number; paused?: boolean; state?: string };
-type WQ = Array<{ id: string; onReady: (v: WistiaApi) => void }>;
+type WQ = Array<{ id: string; options?: Record<string, unknown>; onReady: (v: WistiaApi) => void }>;
 
 function skript(src: string, modul = false) {
   if (document.querySelector(`script[src="${src}"]`)) return;
@@ -75,7 +75,7 @@ export default function WistiaVideo({
     skript(`https://fast.wistia.com/embed/${mediaId}.js`, true);
     const w = window as unknown as { _wq?: WQ };
     w._wq = w._wq || [];
-    w._wq.push({ id: mediaId, onReady: (v) => (api.current = v) });
+    w._wq.push({ id: mediaId, options: { playbackRateControl: false }, onReady: (v) => (api.current = v) });
 
     const schluessel = SPEICHER.position(`wistia:${mediaId}`);
     try {
@@ -107,9 +107,9 @@ export default function WistiaVideo({
         }
         return;
       }
-      // Schneller abspielen zählt nicht als Schauen.
+      // Tempo bleibt immer 1x, auch falls jemand es von außen ändert.
       try {
-        if (!freiRef.current && a?.playbackRate && a.playbackRate() > 1) a.playbackRate(1);
+        if (a?.playbackRate && a.playbackRate() !== 1) a.playbackRate(1);
       } catch {}
       if (laeuft && !gestartet.current) {
         gestartet.current = true;
@@ -142,7 +142,13 @@ export default function WistiaVideo({
   return (
     <div className="relative w-full overflow-hidden rounded-[20px] bg-[#050505]">
       <style>{`wistia-player[media-id='${mediaId}']:not(:defined){background:center / contain no-repeat url('https://fast.wistia.com/embed/medias/${mediaId}/swatch');display:block;filter:blur(5px);padding-top:56.25%;}`}</style>
-      {createElement("wistia-player", { ref: el, "media-id": mediaId, aspect: "1.7777777777777777" })}
+      {createElement("wistia-player", {
+        ref: el,
+        "media-id": mediaId,
+        aspect: "1.7777777777777777",
+        // Kein Tempo-Knopf im Player (Tegh 05.11.).
+        "playback-rate-control": "false",
+      })}
       {sperre && (
         <div className="pointer-events-none absolute inset-x-0 top-3 z-20 flex justify-center px-4">
           <span className="rounded-full bg-black/80 px-4 py-2 text-[13px] text-white">{sperre}</span>
