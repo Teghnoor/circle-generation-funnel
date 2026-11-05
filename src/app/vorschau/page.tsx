@@ -12,7 +12,7 @@ const ZIEL = Math.round(FREISCHALTEN_AB * 100);
 
 const SEITEN = [
   { href: "/", titel: "1 · Start", text: "Landingpage mit Video-Vorschau. Klick auf das Video oder einen Button öffnet das Opt-in-Fenster." },
-  { href: "/video", titel: "2 · Video (gesperrt)", text: `So sieht ein Besucher die Seite: Terminbuchung gesperrt bis ${ZIEL} % echter Sehzeit, Vorspulen blockiert.` },
+  { href: "/video", titel: "2 · Video (gesperrt)", text: `So sieht ein Besucher die Seite: Terminbuchung gesperrt bis ${ZIEL} % echter Sehzeit, Vorspulen blockiert, zurück nur 10 Sekunden.` },
   { href: "/video?ab=0.1", titel: "2 · Video (Schnelltest)", text: "Schaltet schon nach 10 % frei — zum Durchklicken des Ablaufs, ohne das ganze Video zu schauen." },
   { href: "/video?frei=1", titel: "2 · Video (freigeschaltet)", text: "Kalender mit 48-Stunden-Countdown sofort sichtbar, so wie nach dem Schauen." },
   { href: "/danke", titel: "3 · Danke", text: "Bestätigung nach der Terminbuchung mit den nächsten Schritten." },

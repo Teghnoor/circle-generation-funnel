@@ -10,13 +10,16 @@ import { PlayIcon } from "./teile";
  * Player nur, was wirklich gelaufen ist: die weiteste Stelle wächst nur in
  * kleinen Schritten beim normalen Abspielen. Vorspulen ist gesperrt: wer
  * über die weiteste gesehene Stelle hinaus springt, landet wieder dort
- * (Tegh 04.11.: erst ganz schauen, dann Gespräch). Zurückspulen geht.
+ * (Tegh 04.11.: erst ganz schauen, dann Gespräch). Zurückspulen geht nur
+ * bis 10 Sekunden hinter die weiteste Stelle (Tegh 05.11.).
  */
 
 const MAX_SCHRITT = 1.5;
 const TAKT_MS = 250;
 /** Sprung über die weiteste Stelle hinaus, ab dem zurückgesetzt wird. */
 const TOLERANZ = 2;
+/** So weit darf man hinter die weiteste gesehene Stelle zurückspulen. */
+const ZURUECK_MAX = 10;
 const MEILENSTEINE = [0.25, 0.5, 0.75, 1] as const;
 
 type WistiaApi = {
@@ -61,7 +64,7 @@ export default function WistiaVideo({
   const gestartet = useRef(false);
   const freiRef = useRef(frei);
   const [bild, setBild] = useState(Boolean(thumbnail));
-  const [sperre, setSperre] = useState(false);
+  const [sperre, setSperre] = useState<string | null>(null);
   const sperreUhr = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => {
     freiRef.current = frei;
@@ -86,17 +89,22 @@ export default function WistiaVideo({
       const d = a ? a.duration() : e?.duration ?? 0;
       const laeuft = a ? a.state() === "playing" : e?.state === "playing";
       if (!d || !Number.isFinite(d)) return;
-      // Vorspulen sperren, solange nicht freigeschaltet.
-      if (!freiRef.current && t > weiteste.current + TOLERANZ) {
-        const ziel = weiteste.current;
+      // Solange nicht freigeschaltet: nicht vorspulen, nur 10 Sekunden zurück.
+      const unten = Math.max(0, weiteste.current - ZURUECK_MAX);
+      const vor = t > weiteste.current + TOLERANZ;
+      if (!freiRef.current && (vor || t < unten - 0.5)) {
+        const ziel = vor ? weiteste.current : unten;
         try {
           if (a) a.time(ziel);
           else if (e) e.currentTime = ziel;
         } catch {}
         letzte.current = ziel;
-        setSperre(true);
-        if (sperreUhr.current) clearTimeout(sperreUhr.current);
-        sperreUhr.current = setTimeout(() => setSperre(false), 3500);
+        // Hinweis nur, wenn wirklich gespult wurde (nicht beim Fortsetzen nach dem Neuladen).
+        if (gestartet.current) {
+          setSperre(vor ? "Vorspulen geht leider nicht. Das Training wirkt nur am Stück." : `Zurück geht nur ${ZURUECK_MAX} Sekunden.`);
+          if (sperreUhr.current) clearTimeout(sperreUhr.current);
+          sperreUhr.current = setTimeout(() => setSperre(null), 3500);
+        }
         return;
       }
       // Schneller abspielen zählt nicht als Schauen.
@@ -137,9 +145,7 @@ export default function WistiaVideo({
       {createElement("wistia-player", { ref: el, "media-id": mediaId, aspect: "1.7777777777777777" })}
       {sperre && (
         <div className="pointer-events-none absolute inset-x-0 top-3 z-20 flex justify-center px-4">
-          <span className="rounded-full bg-black/80 px-4 py-2 text-[13px] text-white">
-            Vorspulen geht leider nicht. Das Training wirkt nur am Stück.
-          </span>
+          <span className="rounded-full bg-black/80 px-4 py-2 text-[13px] text-white">{sperre}</span>
         </div>
       )}
       {bild && thumbnail && (

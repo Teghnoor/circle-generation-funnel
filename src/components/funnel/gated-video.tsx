@@ -8,7 +8,8 @@ import { PlayIcon } from "./teile";
  * Das Trainingsvideo mit eigener Steuerung. Gezählt wird nur, was wirklich
  * gelaufen ist: `weitesteStelle` wächst ausschließlich durch normales
  * Abspielen (kleine Schritte zwischen zwei timeupdate-Events). Wer nach vorn
- * spult, landet wieder dort; zurückspulen ist erlaubt. Eine reine
+ * spult, landet wieder dort; zurück geht nur 10 Sekunden hinter die
+ * weiteste Stelle (Tegh 05.11.). Eine reine
  * currentTime-Prüfung wäre mit einem Sprung ans Ende erledigt.
  */
 
@@ -16,6 +17,8 @@ import { PlayIcon } from "./teile";
 const MAX_SCHRITT = 1.5;
 /** So viel Spielraum beim Vorspulen, damit Rundungen nicht zurückspringen. */
 const TOLERANZ = 0.75;
+/** So weit darf man hinter die weiteste gesehene Stelle zurückspulen. */
+const ZURUECK_MAX = 10;
 /** Kommt nach dem Klick auf Play so lange kein Bild, gilt das Video als kaputt. */
 const RETTUNG_NACH_MS = 30_000;
 const MEILENSTEINE = [0.25, 0.5, 0.75, 1] as const;
@@ -156,9 +159,14 @@ export default function GatedVideo({
   const spult = useCallback(() => {
     const v = video.current;
     if (!v) return;
+    const unten = Math.max(0, weitesteStelle.current - ZURUECK_MAX);
     if (v.currentTime > weitesteStelle.current + TOLERANZ) {
       v.currentTime = weitesteStelle.current;
-      setHinweis("Vorspulen geht leider nicht — das Training wirkt nur am Stück.");
+      setHinweis("Vorspulen geht leider nicht. Das Training wirkt nur am Stück.");
+      setTimeout(() => setHinweis(null), 3500);
+    } else if (v.currentTime < unten - TOLERANZ) {
+      v.currentTime = unten;
+      setHinweis(`Zurück geht nur ${ZURUECK_MAX} Sekunden.`);
       setTimeout(() => setHinweis(null), 3500);
     }
     letzteZeit.current = v.currentTime;
