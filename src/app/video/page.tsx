@@ -68,7 +68,6 @@ export default async function VideoSeite({
         <div className="mx-auto max-w-6xl">
           <h2 className="cg-h2 mb-8 text-center">Ergebnisse von Circle Generation:</h2>
           <Umsaetze />
-          <p className="mt-6 text-center text-[12px] text-white/40">Ergebnisse sind nicht garantiert und variieren individuell.</p>
         </div>
       </section>
 
