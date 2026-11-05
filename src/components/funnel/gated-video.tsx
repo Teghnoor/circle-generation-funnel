@@ -21,7 +21,7 @@ const TOLERANZ = 0.75;
 const ZURUECK_MAX = 10;
 /** Kommt nach dem Klick auf Play so lange kein Bild, gilt das Video als kaputt. */
 const RETTUNG_NACH_MS = 30_000;
-const MEILENSTEINE = [0.25, 0.5, 0.75, 1] as const;
+const MEILENSTEINE = [0.25, 0.5, 0.75, 0.8, 1] as const;
 
 export type FreiGrund = "frei" | "rettung";
 

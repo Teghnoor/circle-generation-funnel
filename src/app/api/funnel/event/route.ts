@@ -31,6 +31,11 @@ export async function POST(req: Request) {
   const lead = cookieLesen((await cookies()).get(LEAD_COOKIE)?.value);
   console.log(`[funnel] video ${m} lead=${lead?.id ?? "-"} sek=${Number(body.sek) || 0}`);
 
+  // Koray 05.11.: bei 80 % Laufzeit Lead-Status „VSL 80 %“ auf der Plattform.
+  if (lead && m === "80") {
+    await leadMelden({ typ: "video_80", id: lead.id, vorname: lead.vorname, email: lead.email, zeit: new Date().toISOString(), ...lead.herkunft });
+  }
+
   if (lead && (m === "frei" || m === "rettung")) {
     await leadMelden({
       typ: "video_freigeschaltet",

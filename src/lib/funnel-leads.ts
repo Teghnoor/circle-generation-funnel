@@ -9,7 +9,7 @@ import { LEAD_COOKIE } from "./funnel";
  * geht, falls der Webhook mal nicht antwortet.
  */
 
-export type LeadTyp = "optin" | "video_freigeschaltet" | "termin_gebucht" | "anmeldung";
+export type LeadTyp = "optin" | "video_80" | "video_freigeschaltet" | "termin_gebucht" | "anmeldung";
 
 export type LeadDaten = {
   typ: LeadTyp;

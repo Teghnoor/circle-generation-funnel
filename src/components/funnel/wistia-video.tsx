@@ -20,7 +20,7 @@ const TAKT_MS = 250;
 const TOLERANZ = 2;
 /** So weit darf man hinter die weiteste gesehene Stelle zurückspulen. */
 const ZURUECK_MAX = 10;
-const MEILENSTEINE = [0.25, 0.5, 0.75, 1] as const;
+const MEILENSTEINE = [0.25, 0.5, 0.75, 0.8, 1] as const;
 
 type WistiaApi = {
   time: (t?: number) => number;
