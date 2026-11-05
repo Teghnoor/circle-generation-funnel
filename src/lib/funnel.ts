@@ -32,7 +32,7 @@ export const BUCHUNGSFENSTER_STUNDEN = 48;
  * Calendly-Link des Erstgesprächs, z. B. https://calendly.com/circle-generation/erstgespraech.
  * Ohne Link zeigt die Videoseite stattdessen ein Formular (Rückruf per WhatsApp).
  */
-export const CALENDLY_URL = process.env.NEXT_PUBLIC_CALENDLY_URL || "";
+export const CALENDLY_URL = process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/innertsbergeremanuel/expertengesprach-zur-ausbildung-circle-generation";
 
 export const LINKS = {
   impressum: "https://circle-generation.webflow.io/privacy-policy",
