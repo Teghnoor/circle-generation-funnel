@@ -39,6 +39,7 @@ export const LINKS = {
   datenschutz: "https://circle-generation.webflow.io/datenschutzerklarung",
   agb: "https://circle-generation.webflow.io/agb",
   instagram: "https://www.instagram.com/therealgoldmann/",
+  tiktok: "https://www.tiktok.com/@therealgoldmann",
 };
 
 /** Cookie, das die Startseite nach dem Opt-in setzt; ohne es leitet /video zurück. */

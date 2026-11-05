@@ -117,7 +117,7 @@ export function Fuss() {
         <a href={LINKS.impressum} className="hover:text-white">Impressum</a>
         <a href={LINKS.datenschutz} className="hover:text-white">Datenschutz</a>
         <a href={LINKS.agb} className="hover:text-white">AGB</a>
-        <a href={LINKS.instagram} className="hover:text-white" target="_blank" rel="noreferrer">Instagram</a>
+        <a href={LINKS.tiktok} className="hover:text-white" target="_blank" rel="noreferrer">TikTok</a>
       </nav>
       <p className="mt-6 text-[12px] text-white/35">© {new Date().getFullYear()} Circle Generation</p>
     </footer>
