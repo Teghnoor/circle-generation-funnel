@@ -50,8 +50,8 @@ export default function VideoFunnel({
     setKontakt((m) => ({ vorname: m.vorname || lesen(SPEICHER.vorname), email: m.email || lesen(SPEICHER.email) }));
   }, []);
 
+  // Tegh 09.11.: Terminbuchung sofort sichtbar, nicht erst ab 95 %. Das 48-Stunden-Fenster startet beim ersten Besuch.
   useEffect(() => {
-    if (!frei) return;
     let seit = Number(lesen(SPEICHER.freiSeit));
     if (!seit || startFrei) {
       seit = Date.now();
@@ -60,7 +60,7 @@ export default function VideoFunnel({
       } catch {}
     }
     setFreiSeit(seit);
-  }, [frei, startFrei]);
+  }, [startFrei]);
   /* eslint-enable react-hooks/set-state-in-effect */
 
   const freischalten = useCallback((grund: FreiGrund) => {
@@ -82,9 +82,9 @@ export default function VideoFunnel({
         <GatedVideo src={src} poster={poster} schwelle={schwelle} frei={frei} onAnteil={setAnteil} onFrei={freischalten} />
       )}
 
-      {/* Wie connectundcollect.de: unter dem Video nichts, bis das Training geschaut ist. Dann der Button. */}
+      {/* Tegh 09.11.: Button und Kalender sofort unter dem Video (vorher erst ab 95 %). */}
       <div className="mx-auto w-full max-w-3xl" aria-live="polite">
-        {frei && (
+        {(
           <>
             <div className="mt-8 flex justify-center">
               <a href={CALENDLY_URL ? "#termin" : "#anmeldung"} className="cg-btn px-10 py-4 text-[17px] md:text-[19px]">
@@ -104,7 +104,7 @@ export default function VideoFunnel({
         <span className="sr-only">Fortschritt {prozent} %</span>
       </div>
 
-      {frei && (
+      {(
         <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-black/85 px-4 pb-[calc(12px+env(safe-area-inset-bottom))] pt-3 backdrop-blur-md">
           <div className="mx-auto max-w-3xl">
             <a href={CALENDLY_URL ? "#termin" : "#anmeldung"} className="cg-btn w-full py-3.5 text-[16px]">
