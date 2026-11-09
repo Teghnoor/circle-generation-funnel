@@ -282,3 +282,13 @@ body {
 .cg-stimmen > * {
   scroll-snap-align: center;
 }
+
+/* Hinweis „Im Browser öffnen“: Pfeil wippt Richtung Menü oben rechts. */
+.cg-pfeil {
+  animation: cg-pfeil 1.1s ease-in-out infinite;
+  filter: drop-shadow(0 0 12px rgba(255, 46, 50, 0.55));
+}
+@keyframes cg-pfeil {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(6px, -8px); }
+}

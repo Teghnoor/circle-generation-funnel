@@ -45,6 +45,15 @@ function herkunftLesen(): Record<string, string> {
 export function HerkunftMerken() {
   useEffect(() => {
     herkunftLesen();
+    // Nach „Trotzdem hier weiter“ (In-App-Hinweis) den Parameter aus der Leiste nehmen,
+    // damit geteilte Links den Hinweis wieder zeigen. Das Cookie reicht ab hier.
+    try {
+      const u = new URL(window.location.href);
+      if (u.searchParams.has("im_app") && document.cookie.includes("cg_im_app=1")) {
+        u.searchParams.delete("im_app");
+        history.replaceState(history.state, "", u.toString());
+      }
+    } catch {}
   }, []);
   return null;
 }

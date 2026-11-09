@@ -4,7 +4,7 @@ import { LEAD_COOKIE, cookieLesen, leadMelden } from "@/lib/funnel-leads";
 
 export const dynamic = "force-dynamic";
 
-const MEILENSTEINE = new Set(["start", "25", "50", "75", "80", "100", "frei", "rettung", "termin"]);
+const MEILENSTEINE = new Set(["start", "25", "50", "75", "80", "100", "frei", "rettung", "termin", "inapp_hinweis", "inapp_weiter"]);
 
 /** Calendly-Adressen, die mit der Buchung mitkommen — alles andere wird verworfen. */
 function calendlyUri(v: unknown): string | null {
@@ -29,6 +29,11 @@ export async function POST(req: Request) {
   if (!MEILENSTEINE.has(m)) return new NextResponse(null, { status: 204 });
 
   const lead = cookieLesen((await cookies()).get(LEAD_COOKIE)?.value);
+  if (m.startsWith("inapp_")) {
+    // Hinweis „Im Browser öffnen“: nur ins Log, keine Lead-Meldung.
+    console.log(`[funnel] ${m} app=${/^[a-z]{1,12}$/.test(String(body.app)) ? body.app : "-"}`);
+    return new NextResponse(null, { status: 204 });
+  }
   console.log(`[funnel] video ${m} lead=${lead?.id ?? "-"} sek=${Number(body.sek) || 0}`);
 
   // Koray 05.11.: bei 80 % Laufzeit Lead-Status „VSL 80 %“ auf der Plattform.
