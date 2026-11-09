@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Script from "next/script";
 import { useRouter } from "next/navigation";
-import { BUCHUNGSFENSTER_STUNDEN, CALENDLY_URL, GESPRAECHE, LINKS, SPEICHER } from "@/lib/funnel";
+import { BUCHUNGSFENSTER_STUNDEN, CALENDLY_URL, GESPRAECH_MINUTEN, GESPRAECHE, LINKS, SPEICHER } from "@/lib/funnel";
 import { pixel } from "@/lib/pixel";
 import { ereignis } from "./gated-video";
 
@@ -154,8 +154,12 @@ export default function Termin({ vorname, email, freiSeit }: { vorname: string; 
 
         {kalenderUrl && (
           <>
+            {/* Tegh 09.11.: Calendly zeigt nur die Startzeit, deshalb Dauer und Zeitfenster als Hinweis darüber. */}
+            <p className="mt-6 text-[14px] text-white/70">
+              Jedes Gespräch dauert {GESPRAECH_MINUTEN} Minuten. Die Uhrzeit im Kalender ist der Beginn, z. B. 14:00 heißt 14:00–14:{GESPRAECH_MINUTEN} Uhr.
+            </p>
             <div
-              className="calendly-inline-widget mt-6 overflow-hidden rounded-2xl bg-white/5"
+              className="calendly-inline-widget mt-3 overflow-hidden rounded-2xl bg-white/5"
               data-url={kalenderUrl}
               style={{ minWidth: 280, height: 700 }}
             />

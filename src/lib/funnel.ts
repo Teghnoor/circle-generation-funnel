@@ -26,6 +26,8 @@ export const VIDEO_LAENGE = process.env.NEXT_PUBLIC_FUNNEL_VIDEO_LAENGE || "15 M
 
 /** So viele Erstgespräche sind laut VSL frei. */
 export const GESPRAECHE = Number(process.env.NEXT_PUBLIC_FUNNEL_GESPRAECHE) || 17;
+/** Dauer des Erstgesprächs in Calendly (Event „Expertengespräch“, 09.11.: 30 Min.). */
+export const GESPRAECH_MINUTEN = 30;
 /** Nach der Freischaltung hat der Lead so lange Zeit, ein Gespräch zu buchen. */
 export const BUCHUNGSFENSTER_STUNDEN = 48;
 /**
