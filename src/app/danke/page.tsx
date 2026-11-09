@@ -45,8 +45,8 @@ export default async function DankeSeite({
       <section className="mx-auto w-full max-w-5xl px-4 py-12">
         <Schritte schritte={anfrage ? NACH_ANFRAGE : NAECHSTE} />
         <div className="mt-10 text-center">
-          <a href={LINKS.instagram} target="_blank" rel="noreferrer" className="cg-btn">
-            Folge uns auf Instagram
+          <a href={LINKS.youtube} target="_blank" rel="noreferrer" className="cg-btn">
+            Folge uns auf YouTube
           </a>
         </div>
       </section>

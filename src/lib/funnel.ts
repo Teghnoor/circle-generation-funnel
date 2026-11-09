@@ -39,6 +39,7 @@ export const LINKS = {
   datenschutz: "https://circle-generation.webflow.io/datenschutzerklarung",
   agb: "https://circle-generation.webflow.io/agb",
   instagram: "https://www.instagram.com/therealgoldmann/",
+  youtube: "https://www.youtube.com/@therealgoldmann",
   tiktok: "https://www.tiktok.com/@therealgoldmann",
 };
 
