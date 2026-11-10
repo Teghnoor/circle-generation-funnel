@@ -3,13 +3,9 @@
 import { useEffect, useMemo, useState } from "react";
 import Script from "next/script";
 import { useRouter } from "next/navigation";
-import { BUCHUNGSFENSTER_STUNDEN, CALENDLY_URL, GESPRAECH_MINUTEN, GESPRAECHE, LINKS, SPEICHER } from "@/lib/funnel";
+import { CALENDLY_URL, GESPRAECH_MINUTEN, GESPRAECHE, SPEICHER } from "@/lib/funnel";
 import { pixel } from "@/lib/pixel";
 import { ereignis } from "./gated-video";
-
-function zweistellig(n: number) {
-  return n.toString().padStart(2, "0");
-}
 
 function herkunft(): Record<string, string> {
   try {
@@ -30,20 +26,14 @@ function mitgliedRef(): string | null {
 }
 
 /**
- * Nach der Freischaltung: Calendly zum Buchen des Erstgesprächs, ein
- * Countdown für das 48-Stunden-Fenster und — nur wenn die Zahl live aus
- * Calendly kommt — „noch X von 17 Gesprächen frei".
+ * Nach der Freischaltung: Calendly zum Buchen des Erstgesprächs und — nur wenn die Zahl live aus
+ * Calendly kommt — „noch X von 17 Gesprächen frei". Tegh 10.11.: kein 48-Stunden-Fenster mehr,
+ * kein Countdown, Buchung läuft nie ab.
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function Termin({ vorname, email, freiSeit }: { vorname: string; email: string; freiSeit: number }) {
   const router = useRouter();
-  const ende = freiSeit + BUCHUNGSFENSTER_STUNDEN * 3_600_000;
-  const [jetzt, setJetzt] = useState(() => Date.now());
   const [frei, setFrei] = useState<number | null>(null);
-
-  useEffect(() => {
-    const uhr = setInterval(() => setJetzt(Date.now()), 1000);
-    return () => clearInterval(uhr);
-  }, []);
 
   // Freie Plätze nur anzeigen, wenn der Server sie aus Calendly lesen kann.
   useEffect(() => {
@@ -99,27 +89,6 @@ export default function Termin({ vorname, email, freiSeit }: { vorname: string; 
     // vorname/email reichen; die Herkunft ändert sich auf dieser Seite nicht.
   }, [vorname, email]);
 
-  const rest = Math.max(ende - jetzt, 0);
-  const abgelaufen = rest === 0;
-  const h = Math.floor(rest / 3_600_000);
-  const m = Math.floor((rest % 3_600_000) / 60_000);
-  const s = Math.floor((rest % 60_000) / 1000);
-
-  if (abgelaufen) {
-    return (
-      <div id="termin" className="cg-karte p-6 text-center md:p-9">
-        <p className="text-[22px] font-semibold tracking-[-0.03em]">Dein Zeitfenster ist abgelaufen</p>
-        <p className="cg-text mx-auto mt-2 max-w-md text-[15px]">
-          Die {BUCHUNGSFENSTER_STUNDEN} Stunden für dein Erstgespräch sind vorbei. Schreib uns auf{" "}
-          <a href={LINKS.instagram} target="_blank" rel="noreferrer" className="underline">
-            Instagram
-          </a>
-          , falls du trotzdem noch einen Termin möchtest.
-        </p>
-      </div>
-    );
-  }
-
   return (
     <div id="termin" className="cg-karte cg-auftauchen relative overflow-hidden p-5 md:p-8">
       <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-[#ff2e32]/20 blur-3xl" />
@@ -131,17 +100,10 @@ export default function Termin({ vorname, email, freiSeit }: { vorname: string; 
           Buch jetzt dein kostenloses Erstgespräch
         </h2>
         <p className="cg-text mt-2 text-[15px]">
-          Du hast nur diese eine Chance: Das Zeitfenster gilt {BUCHUNGSFENSTER_STUNDEN} Stunden ab jetzt. Nach der Buchung
-          meldet sich unser Team per WhatsApp bei dir.
+          Such dir einen Termin aus. Nach der Buchung meldet sich unser Team per WhatsApp bei dir.
         </p>
 
         <div className="mt-5 flex flex-wrap items-stretch gap-3">
-          <div className="rounded-2xl border border-[#ff2e32]/40 bg-[#ff2e32]/10 px-4 py-3" aria-live="off">
-            <div className="text-[12px] font-medium uppercase tracking-[0.08em] text-white/60">Zeitfenster endet in</div>
-            <div className="mt-0.5 font-mono text-[26px] font-semibold tabular-nums tracking-tight text-white">
-              {zweistellig(h)}:{zweistellig(m)}:{zweistellig(s)}
-            </div>
-          </div>
           {frei !== null && (
             <div className="rounded-2xl border border-white/12 bg-white/5 px-4 py-3">
               <div className="text-[12px] font-medium uppercase tracking-[0.08em] text-white/60">Freie Gespräche</div>
